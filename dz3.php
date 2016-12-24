@@ -44,6 +44,7 @@
 
         asort($date); // Сортировка по возрастанию
 
+        // Временные зоны
         echo date_default_timezone_get()."<br/>";
         date_default_timezone_set('America/New_York');
         echo date_default_timezone_get(). "<br/>";
