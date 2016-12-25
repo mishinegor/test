@@ -27,7 +27,12 @@
         $date[$key]= date('j', $val);
     }
     $min_day = min($date);
+
+foreach ($date as $key => $val){
+    $date[$key]= date('n', $val);
+}
     $max_month = min($date);
+
 
     echo "Наименший день: " .$min_day.  "<br/>";
     echo "Наибольший месяц: " .$max_month. "<br/>";
