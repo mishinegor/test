@@ -23,24 +23,14 @@
             $date[] = mt_rand(1, time());
     }
 
+    foreach ($date as $key => $val){
+        $date[$key]= date('j', $val);
+    }
+    $min_day = min($date);
+    $max_month = min($date);
 
-    $min_day = min (
-        date('j', $date[0]),
-        date('j', $date[1]),
-        date('j', $date[2]),
-        date('j', $date[4])
-        );
-        echo "Наименший день: " .$min_day.  "<br/>";
-
-
-        $max_month = min (
-            date('n', $date[0]),
-            date('n', $date[1]),
-            date('n', $date[2]),
-            date('n', $date[4])
-        );
-
-        echo "Наибольший месяц: " .$max_month. "<br/>";
+    echo "Наименший день: " .$min_day.  "<br/>";
+    echo "Наибольший месяц: " .$max_month. "<br/>";
 
         asort($date); // Сортировка по возрастанию
 
