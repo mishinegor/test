@@ -31,7 +31,7 @@
 foreach ($date as $key => $val){
     $date[$key]= date('n', $val);
 }
-    $max_month = min($date);
+    $max_month = max($date);
 
 
     echo "Наименший день: " .$min_day.  "<br/>";
