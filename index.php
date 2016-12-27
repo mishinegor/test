@@ -1,3 +1,5 @@
 <?php
-echo "My name is Egor";
+    error_reporting(E_ALL);
+    print('Привет как дела?');
+    echo 'test';
 ?>
