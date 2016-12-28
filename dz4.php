@@ -48,25 +48,69 @@ $bd=  parse_ini_string($ini_string, true);
 $total_cost = 0; // Общая стоимость
 $total_amount = 0; // Общее колличество
 
-
 // Уведамления
     $product=" ";
     $notice=" " ; // Сообщение
 foreach ($bd as $key => $val) {
     // Вывод уведамления
     if ($val['осталось на складе'] <= $val['количество заказано']) {
-            $product.="<b>".$key."</b>, ";
-            $notice= "К сожалению, нужного количества " .$product." нет на складе";
+        $product .= "<b>" . $key . "</b>, ";
+        $notice = "К сожалению, нужного количества " . $product . " нет на складе";
 
-    } else{
-            $notice= "Весь товар в наличии";
+    } else {
+        $notice = "Весь товар в наличии";
     }
+
     // Подсчёт общего колличества и стоимости
     $total_amount +=$val['количество заказано'];
     $total_cost +=$val['количество заказано']*$val['цена'];
+}
+
+
+function calc_discount($bd) { //Функция рассчёта скидки
+    global $discount_procent; //Процент скидки
+    global $discount_cost;
+    static $discount_price;
+
+    // Скидка для велосипедов 30%
+    if($bd['игрушка детская велосипед']['количество заказано']>=3
+        &&$bd['игрушка детская велосипед']['количество заказано']<=$bd['игрушка детская велосипед']['осталось на складе']) {
+        $val['diskont'] = 'diskont3';
+    }
+    foreach ($bd as $key => $val) {
+        switch ($val['diskont']) {
+            case 'diskont0':
+                $discount_price = $val['цена'] *= 1;
+                $discount_procent="0 %";
+                break;
+            case 'diskont1':
+                $discount_price = $val['цена'] *= 0.9;
+                $discount_procent="10 %";
+                break;
+            case 'diskont2':
+                $discount_price = $val['цена'] *= 0.8;
+                $discount_procent="20 %";
+                break;
+            case 'diskont3':
+                $val['цена'] *= 0.7;
+                $discount_procent="30 %";
+                break;
+
+        }
+
+        $discount_cost += $discount_price *$val['количество заказано']; // Стоимость со скидкой;
+
+    }
+    return $discount_cost;
 
 }
+
+calc_discount($bd);
+
 ?>
+
+
+
 
 <body>
 <style>
@@ -144,18 +188,25 @@ foreach ($bd as $key => $val) {
                 <td>Колличество наименований</td>
                 <td>Общее колличество закаов</td>
                 <td>Общая стоимость заказа</td>
+                <td>Общая стоимость со скидкой</td>
             </tr>
 
                 <?php
                     echo '<tr>'
                         .'<td>'.count($bd).'</td>'
                         .'<td>'."$total_amount".'</td>'
-                        .'<td>'.$total_cost.'</td>';
+                        .'<td>'.$total_cost.'</td>'
+                        .'<td>'.$discount_cost.'</td>';
                     echo '</tr>';
                 ?>
             </tr>
         </table>
         <h2>Акции:</h2>
+        <?php echo
+        "Внимание! при покупке 3-х велосипедов, вы получите скидку 30%".'<br/>'.
+        "Ваша скидка на товар равна ".$discount_procent;
+
+        ?>
 
         <h2>Наличие товара:</h2>
         <?php echo $notice; //Сообщение об отсутствии товара ?>
