@@ -73,16 +73,15 @@ function calc_discount($bd) { //Функция рассчёта скидки
     global $notice_30;
     static $discount_price;
 
+    $notice_30="Внимание при заказе 3-х товаров игрушка детская велосипед скидка 30% ";
+
     foreach ($bd as $key => $val) {
 
         // Скидка для велосипедов 30%
         if($key=='игрушка детская велосипед'&&$val['количество заказано']>=3&&$val['количество заказано']<=$val['осталось на складе']) {
             $val['diskont'] = 'diskont3';
-            $notice_30="Внимание при заказе 3-х товаров игрушка детская велосипед скидка 30% ";
-        }else {
-            $val['diskont'] = 'diskont0';
-            $notice_30="Данного колличества ".$key." нет в наличии";
-        }
+        };
+
         switch ($val['diskont']) {
             case 'diskont0':
                 $discount_price = $val['цена'] *= 1;
