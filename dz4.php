@@ -70,15 +70,18 @@ foreach ($bd as $key => $val) {
 function calc_discount($bd) { //Функция рассчёта скидки
     global $discount_procent; //Процент скидки
     global $discount_cost;
+    global $notice_30;
     static $discount_price;
 
     foreach ($bd as $key => $val) {
 
         // Скидка для велосипедов 30%
-        if($key=='игрушка детская велосипед'&&$val['количество заказано']<=3&&$val['количество заказано']<= $val['осталось на складе']) {
+        if($key=='игрушка детская велосипед'&&$val['количество заказано']<=3&&$val['количество заказано']<=$val['осталось на складе']) {
             $val['diskont'] = 'diskont3';
+            $notice_30="Внимание при заказе 3-х товаров игрушка детская велосипед скидка 30% ";
         }else {
             $val['diskont'] = 'diskont0';
+            $notice_30="Данного колличества ".$key." нет в наличии";
         }
         switch ($val['diskont']) {
             case 'diskont0':
@@ -205,7 +208,7 @@ calc_discount($bd);
         </table>
         <h2>Акции:</h2>
         <?php echo
-        "Внимание! при покупке 3-х велосипедов, вы получите скидку 30%".'<br/>'.
+        $notice_30.'<br/>'.
         "Ваша скидка на товар равна ".$discount_procent;
 
         ?>
