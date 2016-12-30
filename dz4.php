@@ -23,7 +23,7 @@ diskont = diskont'.  mt_rand(0, 2).';
 diskont = diskont'.  mt_rand(0, 2).';
 ';
 $bd=  parse_ini_string($ini_string, true);
-//print_r($bd);
+
 
 /*
  *
@@ -47,175 +47,124 @@ $bd=  parse_ini_string($ini_string, true);
 // Общая сумма заказа и колличество
 $total_cost = 0; // Общая стоимость
 $total_amount = 0; // Общее колличество
+$discount_price=0; // Цена со скидкой
+$discount_procent=0;
 
 // Уведамления
     $product=" ";
     $notice=" " ; // Сообщение
+
 foreach ($bd as $key => $val) {
     // Вывод уведамления
     if ($val['осталось на складе'] < $val['количество заказано']) {
-        $product .= "<b>" . $key . "</b>, ";
-        $notice = "К сожалению, нужного количества " . $product . " нет на складе";
-
+        $bd[$key]['наличие товара'] = "Нет в наличии"; // Добавляем  наличие товара в массив $bd
     } else {
-        $notice = "Весь товар в наличии";
+        $bd[$key]['наличие товара'] = "Товар в наличии";
     }
 
     // Подсчёт общего колличества и стоимости
-    $total_amount +=$val['количество заказано'];
-    $total_cost +=$val['количество заказано']*$val['цена'];
+    $total_amount += $val['количество заказано'];
+    $bd[$key]['стоимость'] = $val['количество заказано'] * $val['цена'];// Добавляем стоимость в массив $bd
+    $total_cost += $val['количество заказано'] * $val['цена'];
+
+    // Скидка для велосипедов 30%
+    if ($key == 'игрушка детская велосипед' && $val['количество заказано'] >= 3 && $val['количество заказано'] <= $val['осталось на складе']) {
+        $val['diskont'] = 'diskont3';
+    };
+
+    switch ($val['diskont']) { // Расчет скидки
+        case 'diskont0':
+            $discount_procent = 0;
+            $discount_price = $val['цена']*1;
+            break;
+        case 'diskont1':
+            $discount_procent = 10;
+            $discount_price = $val['цена']*0.9;
+            break;
+        case 'diskont2':
+            $discount_procent = 20;
+            $discount_price = $val['цена']*0.8;
+            break;
+        case 'diskont3':
+            $discount_procent = 30;
+            $discount_price = $val['цена']*0.7;
+            break;
+    }
+
+    $bd[$key]['стоимость со скидкой']=$discount_price*$val['количество заказано']; // Добавляем стоимость со скидкой в массив $bd
+    $bd[$key]['скидка']=$discount_procent.'%'; // Добавляем скидку в массив $bd
 }
-
-
-function calc_discount($bd) { //Функция рассчёта скидки
-    global $discount_procent; //Процент скидки
-    global $discount_cost;
-    global $notice_30;
-    static $discount_price;
-
-    $notice_30="Внимание при заказе 3-х товаров игрушка детская велосипед скидка 30% ";
+function calc_discount($bd) { //Функция подсчёта общей стоимости со скидкой скидкой
+    global $total_coast_discount; // Общая стоимость со скидкой
 
     foreach ($bd as $key => $val) {
-
-        // Скидка для велосипедов 30%
-        if($key=='игрушка детская велосипед'&&$val['количество заказано']>=3&&$val['количество заказано']<=$val['осталось на складе']) {
-            $val['diskont'] = 'diskont3';
-        };
-
-        switch ($val['diskont']) {
-            case 'diskont0':
-                $discount_price = $val['цена'] *= 1;
-                $discount_procent="0 %";
-                break;
-            case 'diskont1':
-                $discount_price = $val['цена'] *= 0.9;
-                $discount_procent="10 %";
-                break;
-            case 'diskont2':
-                $discount_price = $val['цена'] *= 0.8;
-                $discount_procent="20 %";
-                break;
-            case 'diskont3':
-                $val['цена'] *= 0.7;
-                $discount_procent="30 %";
-                break;
-
-        }
-
-        $discount_cost += $discount_price *$val['количество заказано']; // Стоимость со скидкой;
-
+        $total_coast_discount+=$val['стоимость со скидкой'];
     }
-    return $discount_cost;
-
 }
-
 calc_discount($bd);
-
 ?>
 
+<!doctype html>
+<html lang="ru-en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Корзина товаров</title>
+</head>
+    <body>
+        <div class="container">
+            <h1>Мои заказы:</h1>
+            <table>
+                <tr class="caption">
+                    <td>Наименование товара</td>
+                    <td>Цена</td>
+                    <td>Колличество</td>
+                    <td>Стоимость товара</td>
+                    <td>Наличие товара</td>
+                    <td>Скидка по купону</td>
+                    <td>Стоиммость со скидкой</td>
+                    <td>Остаток на складе</td>
 
-
-
-<body>
-<style>
-    body {
-        font-size: 14px;
-        font-family: 'Verdana';
-        color:#666;
-    }
-    h1{
-        font-size: 1.8em;
-    }
-    h2 {
-
-    }
-    table {
-        width: 1200px;
-        max-width:90%;
-        margin: 2% auto;
-        border-spacing: 5px 0px;
-        border: 2px solid #cccccc;
-        padding: .3% 0;
-
-    }
-
-    tr.caption {
-        background-color: #cccccc;
-        font-weight:bold;
-        font-size: 1.2em;
-        color: #ffffff;
-
-    }
-    tr {
-        color:#666;
-    }
-
-    td {
-        padding: 1.5%;
-        border: 1px solid #ccc;
-    }
-
-    div.container {
-        width: 1200px;
-        max-width: 90%;
-        margin: 0 auto;
-    }
-
-</style>
-    <div class="container">
-        <h1>Мои заказы:</h1>
-        <table>
-            <tr class="caption">
-                <td>Наименование товара</td>
-                <td>Цена</td>
-                <td>Колличество</td>
-                <td>Остаток на складе</td>
-
-            </tr>
-
-            <?php
-            foreach ($bd as $key => $val) {
-                echo '<tr>'
-                    .'<td>'.$key.'</td>'
-                    .'<td>'.$val['цена'].'</td>'
-                    .'<td>'.$val['количество заказано'].'</td>'
-                    .'<td>'.$val['осталось на складе'].'</td>';
-            echo '</tr>';
-            reset($bd);
-            }
-            ?>
-        </table>
-
-        <h2>Итого:</h2>
-        <table>
-            <tr class="caption">
-                <td>Колличество наименований</td>
-                <td>Общее колличество закаов</td>
-                <td>Общая стоимость заказа</td>
-                <td>Общая стоимость со скидкой</td>
-            </tr>
+                </tr>
 
                 <?php
+                foreach ($bd as $key => $val) {
                     echo '<tr>'
-                        .'<td>'.count($bd).'</td>'
-                        .'<td>'."$total_amount".'</td>'
-                        .'<td>'.$total_cost.'</td>'
-                        .'<td>'.$discount_cost.'</td>';
+                        .'<td>'.$key.'</td>'
+                        .'<td>'.$val['цена'].'</td>'
+                        .'<td>'.$val['количество заказано'].'</td>'
+                        .'<td>'.$val['стоимость'].'</td>'
+                        .'<td>'.$val['наличие товара'].'</td>'
+                        .'<td>'.$val['скидка'].'</td>'
+                        .'<td>'.$val['стоимость со скидкой'].'</td>'
+                        .'<td>'.$val['осталось на складе'].'</td>';
                     echo '</tr>';
+                }
                 ?>
-            </tr>
-        </table>
-        <h2>Акции:</h2>
-        <?php echo
-        $notice_30.'<br/>'.
-        "Ваша скидка на товар равна ".$discount_procent;
+            </table>
 
-        ?>
+            <h2>Внимание акция:</h2>
+            <p>При покупке 3-х детских велосипедов скидка 30%</p>
 
-        <h2>Наличие товара:</h2>
-        <?php echo $notice; //Сообщение об отсутствии товара ?>
-    </div> <!-- End container -->
-</body>
+            <h2>Итого:</h2>
+            <table>
+                <tr class="caption">
+                    <td>Колличество наименований</td>
+                    <td>Общее колличество закаов</td>
+                    <td>Общая стоимость заказа</td>
+                    <td>Общая стоимость со скидкой</td>
+                </tr>
 
-
-
+                <?php
+                echo '<tr>'
+                    .'<td>'.count($bd).'</td>'
+                    .'<td>'."$total_amount".'</td>'
+                    .'<td>'.$total_cost.'</td>'
+                    .'<td>'.$total_coast_discount.'</td>';
+                echo '</tr>';
+                ?>
+            </table>
+    </body>
+</html>
