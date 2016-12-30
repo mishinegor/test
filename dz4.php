@@ -1,4 +1,4 @@
-<?php
+<?php require_once ('func.php');
 
 /*
 * Задание Урока 4.
@@ -51,8 +51,6 @@ $discount_price=0; // Цена со скидкой
 $discount_procent=0;
 
 // Уведамления
-    $product=" ";
-    $notice=" " ; // Сообщение
 
 foreach ($bd as $key => $val) {
     // Вывод уведамления
@@ -94,13 +92,7 @@ foreach ($bd as $key => $val) {
     $bd[$key]['стоимость со скидкой']=$discount_price*$val['количество заказано']; // Добавляем стоимость со скидкой в массив $bd
     $bd[$key]['скидка']=$discount_procent.'%'; // Добавляем скидку в массив $bd
 }
-function calc_discount($bd) { //Функция подсчёта общей стоимости со скидкой скидкой
-    global $total_coast_discount; // Общая стоимость со скидкой
 
-    foreach ($bd as $key => $val) {
-        $total_coast_discount+=$val['стоимость со скидкой'];
-    }
-}
 calc_discount($bd);
 ?>
 
