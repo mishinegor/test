@@ -1,3 +1,5 @@
 <?php
-   $v=10;
+    $_GET['id']=1;
+    var_dump($_GET);
+
 ?>

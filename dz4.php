@@ -67,8 +67,12 @@ foreach ($bd as $key => $val) {
 
     // Скидка для велосипедов 30%
     if ($key == 'игрушка детская велосипед' && $val['количество заказано'] >= 3 && $val['количество заказано'] <= $val['осталось на складе']) {
-        $val['diskont'] = 'diskont3';
-    };
+       $val['diskont']=['diskont'];
+        $notice="Ваша скидка на велосипеды детские равна 30%";
+        $discount_procent=30;
+    }else {
+        $notice="Товара нет в наличии";
+    }
 
     switch ($val['diskont']) { // Расчет скидки
         case 'diskont0':
@@ -82,10 +86,6 @@ foreach ($bd as $key => $val) {
         case 'diskont2':
             $discount_procent = 20;
             $discount_price = $val['цена']*0.8;
-            break;
-        case 'diskont3':
-            $discount_procent = 30;
-            $discount_price = $val['цена']*0.7;
             break;
     }
 
@@ -138,7 +138,8 @@ calc_discount($bd);
             </table>
 
             <h2>Внимание акция:</h2>
-            <p>При покупке 3-х детских велосипедов скидка 30%</p>
+            <p>При покупке 3-х детских велосипедов скидка 30%<br/>
+            <?php echo $notice;?></p>
 
             <h2>Итого:</h2>
             <table>
