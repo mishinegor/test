@@ -21,7 +21,7 @@ function news_list($news) {
     unset($news[0]);
 
     foreach ($news as $key => $val) { //Вывод новостей
-        if(isset($_GET['id'])){
+        if(isset($_GET['id'])){ // Проверка если новость существует
             echo '<b>'."Новость ".$key.': </b>'.$val.'</br>';
         }
     }
@@ -31,7 +31,8 @@ function news_list($news) {
 
 
 // Функция вывода конкретной новости.
-function news_item($news) {
+function news_item($news)
+{
     global $item;
 
     // Сдвиг индекса на массива на 1
@@ -40,15 +41,18 @@ function news_item($news) {
 
     foreach ($news as $key => $val) { //Вывод новостей
         $key = $_GET['id']; // Индекс новости = id
-        $item = '<b>'."Новость ".$key.': </b>'.$news[$key].'</br>';
-    }
-    if ($_GET[] = 'id' && $_GET['id'] < count($news)&& isset($_GET['id'])) {
-        echo $item;
-    } elseif (!isset($_GET['id'])){
-        header("HTTP/1.0 404 Not Found");
-    }else
-        news_list($news);
+        if (isset($news[$key])) {
+            $item = '<b>' . "Новость " . $key . ': </b>' . $news[$key] . '</br>';
+        } else {
+            header("HTTP/1.0 404 Not Found");
         }
+    }
+    if ($_GET['id'] < count($news) && isset($_GET['id'])) {
+        echo $item;
+    } else {
+        news_list($news);
+    }
+}
 
 news_item($news);
 // Точка входа.
