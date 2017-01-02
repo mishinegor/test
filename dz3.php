@@ -25,12 +25,9 @@
 
     foreach ($date as $key => $val){
         $date[$key]= date('j', $val);
+        $date[$key]= date('n', $val);
     }
     $min_day = min($date);
-
-foreach ($date as $key => $val){
-    $date[$key]= date('n', $val);
-}
     $max_month = max($date);
 
 
