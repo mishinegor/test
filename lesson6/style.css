@@ -1,4 +1,4 @@
-
+﻿
 body {
     font-size: 14px;
     font-family: 'Verdana';
@@ -78,7 +78,7 @@ input[name='price']{ /* Уменьшаем поле цена */
     margin-left: 1%;
 }
 
-input.buttons {
+.buttons {
     background-color: aliceblue;
 
     border: 2px solid #666666;
@@ -94,11 +94,13 @@ input.buttons {
     transition: .5s;
 }
 
-input[type='submit']{ /* растояние между кнопками */
-    margin-right:2em;
+input[type='submit']{
+    width: 45%;
+    margin: 0 auto;
+    display: block;
 }
 
-input.buttons:hover {
+.buttons:hover {
     cursor: pointer;
 
     color: white;
