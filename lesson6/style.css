@@ -109,3 +109,38 @@ input[type='submit']{
 
 }
 
+p#notice{
+    font-size: .8em;
+    margin: 5% 0 0 27%;
+}
+
+/* Таблица */
+
+table {
+    width: 500px;
+    max-width:90%;
+    margin: 2% auto;
+    border: 1px solid #cccccc;
+    padding: .3% 0;
+
+}
+
+tr.caption {
+    background-color: aliceblue;
+    font-weight:bold;
+    color: #666;
+}
+
+tr.caption td {
+    text-align: center;
+}
+tr {
+    color:#666;
+}
+
+td {
+    padding: 1.5%;
+    border: 1px solid #666;
+    text-align: center;
+}
+
