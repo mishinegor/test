@@ -1,10 +1,19 @@
 ﻿<?php
-error_reporting( E_ERROR );
-session_start();
-if(isset($_POST['add'])) {
+    error_reporting( E_ERROR );
+    session_start();
     $id = uniqid(); //генерируем у никальный id обявления
-    $_SESSION['ads'][$id]=$_POST;
-}
+
+    if(isset($_POST['add'])) {
+        $_SESSION['ads'][$id]=$_POST;
+    }
+
+    if (isset($_GET['del'])) { //Удаление записи
+        unset($_SESSION['ads'][$_GET['id']]);
+    }
+
+
+    var_dump($_GET);
+    var_dump($_SESSION['ads']);
 
 ?>
 <!doctype html>
@@ -27,7 +36,7 @@ if(isset($_POST['add'])) {
         </fieldset>
 
         <fieldset class="contacts_email">
-            <label>Ваше имя <input name="name" type="text" required></label><br/>
+            <label>Ваше имя <input name="name" type="text" placeholder="<?php echo (isset($_GET['show_id'])? "1": "");?>" required></label><br/>
             <label>Ваш email <input name="email" type="email" required></label><br/>
             <label id="checkbox"><input name="confirm_rss" type="checkbox">Я хочу получать вопросы по объявлению на email</label><br/>
         </fieldset>
@@ -81,7 +90,7 @@ if(isset($_POST['add'])) {
 
                 foreach ($_SESSION['ads'] as $key => $val) {
                     echo '<tr>'
-                        .'<td>'.$val['name_ad'].'</td>'
+                        .'<td><a href="?show_id='.$key.'">'.$val['name_ad'].'</a></td>' //show параметр для показа записи
                         .'<td>'.$val['price'].'</td>'
                         .'<td>'.$val['name'].'</td>'
                         .'<td><a href="?id='.$key.'&&del=true">'."Удалить".'</a></td>'; //del параметр для удаления записи
