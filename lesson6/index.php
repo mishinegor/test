@@ -13,7 +13,9 @@
 
 
     var_dump($_GET);
-    var_dump($_SESSION['ads']);
+    var_dump($_POST);
+    var_dump(($_SESSION['ads']));
+    //session_unset();
 
 ?>
 <!doctype html>
@@ -31,20 +33,20 @@
     <h1>Подайте объявление:</h1>
     <form  method="post" id="add">
         <fieldset class="radio">
-            <label><input name="private" type="radio">Частное лицо</label>
-            <label><input name="corp" type="radio">Компания</label>
+            <label><input name="subject[0]=on" type="radio" >Частное лицо</label>
+            <label><input name="subject[0]=off" type="radio">Компания</label>
         </fieldset>
 
         <fieldset class="contacts_email">
-            <label>Ваше имя <input name="name" type="text" placeholder="<?php echo (isset($_GET['show_id'])? "1": "");?>" required></label><br/>
-            <label>Ваш email <input name="email" type="email" required></label><br/>
+            <label>Ваше имя <input name="name" type="text" placeholder="<?php echo (isset($_GET['show_id']) ? $_SESSION['ads'][$_GET['show_id']]['name']: " ");?>" required></label><br/>
+            <label>Ваш email <input name="email" type="email"  placeholder="<?php echo (isset($_GET['show_id']) ? $_SESSION['ads'][$_GET['show_id']]['email']: " ");?>" required></label><br/>
             <label id="checkbox"><input name="confirm_rss" type="checkbox">Я хочу получать вопросы по объявлению на email</label><br/>
         </fieldset>
 
         <fieldset class="contacts_location">
-            <label>Ваш телефон <input name="phone" type="text" required></label><br/>
+            <label>Ваш телефон <input name="phone" type="text" placeholder="<?php echo (isset($_GET['show_id']) ? $_SESSION['ads'][$_GET['show_id']]['phone']: " ");?>" required></label><br/>
             <label>Ваш город
-                <select  name="city">
+                <select  name="cities">
                     <option disabled>Выберите ваш город</option>
                     <option selected value="Новосибирск">Новосибирск</option>
                     <option  value="Москва">Москва</option>
@@ -52,9 +54,9 @@
                 </select>
             </label><br/>
             <label>Категория товара
-                <select  name="cat">
+                <select  name="cat" required>
                     <option disabled>Выберите категорию</option>
-                    <option selected value="Бытовая техника" required>Бытовая техника</option>
+                    <option selected value="Бытовая техника" >Бытовая техника</option>
                     <option  value="Тоывры для дома">Тоывры для дома</option>
                     <option value="Компьютерная техника">Компьютерная техника</option>
                 </select>
@@ -62,10 +64,10 @@
         </fieldset>
 
         <fieldset class="section_ad">
-            <label>Заголовок обявления<input name="name_ad" type="text" required></label><br/>
+            <label>Заголовок обявления<input name="name_ad" type="text" placeholder="<?php echo (isset($_GET['show_id']) ? $_SESSION['ads'][$_GET['show_id']]['name_ad']: " ");?>" required></label><br/>
             <p>Текст объявления</p>
-            <label><textarea name="ad" id="" cols="50" rows="10" required></textarea></label><br/>
-            <label id="price">Цена <input name="price" type="text" size="5"> <span>руб</span></label><br/>
+            <label><textarea name="ad" id="" cols="50" rows="10" placeholder="<?php echo (isset($_GET['show_id']) ? $_SESSION['ads'][$_GET['show_id']]['ad']: " ");?>" required></textarea></label><br/>
+            <label id="price">Цена <input name="price" type="text" size="5" placeholder="<?php echo (isset($_GET['show_id']) ? $_SESSION['ads'][$_GET['show_id']]['price']: " ");?>"> <span>руб</span></label><br/>
         </fieldset>
         <input type="submit" value="Добавить объявление" class="buttons" name="add">
         <p id="notice">*Все поля обязательны для заполнения</p>
@@ -90,10 +92,10 @@
 
                 foreach ($_SESSION['ads'] as $key => $val) {
                     echo '<tr>'
-                        .'<td><a href="?show_id='.$key.'">'.$val['name_ad'].'</a></td>' //show параметр для показа записи
+                        .'<td><a href="?show_id='.$key.'">'.$val['name_ad'].'</a></td>'
                         .'<td>'.$val['price'].'</td>'
                         .'<td>'.$val['name'].'</td>'
-                        .'<td><a href="?id='.$key.'&&del=true">'."Удалить".'</a></td>'; //del параметр для удаления записи
+                        .'<td><a href="?id='.$key.'">Удалить'.'</a></td>';
                     echo '</tr>';
                 }
                 echo '</table>';
