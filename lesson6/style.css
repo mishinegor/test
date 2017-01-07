@@ -5,6 +5,16 @@ body {
     color:#666;
     background-color: aliceblue;
 }
+a {
+    font-size: .9em;
+    color: #666;
+}
+
+a:hover {
+    font-size: .9em;
+    color: #333;
+    text-decoration: none;
+}
 h1{
     font-size: 1.8em;
 }

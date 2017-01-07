@@ -11,10 +11,22 @@
         unset($_SESSION['ads'][$_GET['id']]);
     }
 
+    // обработка select cities
+        $cities=[
+            '543644'=>'Новосибирск',
+            '543645'=>'Москва',
+            '543646'=>'Минск'
+        ];
 
-    var_dump($_GET);
-    var_dump($_POST);
-    var_dump(($_SESSION['ads']));
+    // обработка select categories
+
+    $categories=[
+        '543655'=>'Бытовая техника',
+        '543659'=>'Товары для дома',
+        '543660'=>'Коампьютерная техника'
+    ];
+
+
     //session_unset();
 
 ?>
@@ -33,32 +45,37 @@
     <h1>Подайте объявление:</h1>
     <form  method="post" id="add">
         <fieldset class="radio">
-            <label><input name="subject[0]=on" type="radio" >Частное лицо</label>
-            <label><input name="subject[0]=off" type="radio">Компания</label>
+            <label><input name="private" type="radio" <?php echo ($_SESSION['ads'][$_GET['show_id']]['private']=="on" ?  'checked':''); ?>>Частное лицо</label>
+            <label><input name="corp" type="radio" <?php echo ($_SESSION['ads'][$_GET['show_id']]['corp']=="on" ?  'checked':''); ?>>Компания</label>
         </fieldset>
 
         <fieldset class="contacts_email">
             <label>Ваше имя <input name="name" type="text" placeholder="<?php echo (isset($_GET['show_id']) ? $_SESSION['ads'][$_GET['show_id']]['name']: " ");?>" required></label><br/>
             <label>Ваш email <input name="email" type="email"  placeholder="<?php echo (isset($_GET['show_id']) ? $_SESSION['ads'][$_GET['show_id']]['email']: " ");?>" required></label><br/>
-            <label id="checkbox"><input name="confirm_rss" type="checkbox">Я хочу получать вопросы по объявлению на email</label><br/>
+            <label id="checkbox"><input name="confirm_rss" type="checkbox" <?php echo ($_SESSION['ads'][$_GET['show_id']]['confirm_rss']=="on" ?  'checked':''); ?>>Я хочу получать вопросы по объявлению на email</label><br/>
         </fieldset>
 
         <fieldset class="contacts_location">
             <label>Ваш телефон <input name="phone" type="text" placeholder="<?php echo (isset($_GET['show_id']) ? $_SESSION['ads'][$_GET['show_id']]['phone']: " ");?>" required></label><br/>
             <label>Ваш город
-                <select  name="cities">
+                <select  name="city">
                     <option disabled>Выберите ваш город</option>
-                    <option selected value="Новосибирск">Новосибирск</option>
-                    <option  value="Москва">Москва</option>
-                    <option value="Минск">Минск</option>
+                    <?php foreach ($cities as $city_id => $city) {
+                        $selected = ($_SESSION['ads'][$_GET['show_id']]['city']==$city_id ?  'selected':'');
+                        echo '<option data-coords=",," '.$selected.' value="'.$city_id.'">'.$city.'</option>';
+                    }
+
+                    ?>
                 </select>
             </label><br/>
             <label>Категория товара
                 <select  name="cat" required>
                     <option disabled>Выберите категорию</option>
-                    <option selected value="Бытовая техника" >Бытовая техника</option>
-                    <option  value="Тоывры для дома">Тоывры для дома</option>
-                    <option value="Компьютерная техника">Компьютерная техника</option>
+                    <?php foreach ($categories as $cat_id => $cat) {
+                        $selected = ($_SESSION['ads'][$_GET['show_id']]['cat']==$cat_id ?  'selected':'');
+                        echo '<option data-coords=",," '.$selected.' value="'.$cat_id.'">'.$cat.'</option>';
+                    }
+                    ?>
                 </select>
             </label><br/>
         </fieldset>
@@ -73,15 +90,15 @@
         <p id="notice">*Все поля обязательны для заполнения</p>
     </form>
 
-    <h2>Ваши объявления: </h2>
+    <?php
 
-    <div id="ad_container">
+            if(!empty($_SESSION['ads'])) {
+                echo '
+                <h2>Ваши объявления: </h2>
 
-
-            <?php
-
-            if(isset($_SESSION['ads'])) {
-                echo '<table>
+                <div id="ad_container">
+                                        
+                <table>
                     <tr class="caption">'
                     . '<td>Название</td>'
                     . '<td>Цена</td>'
@@ -95,13 +112,13 @@
                         .'<td><a href="?show_id='.$key.'">'.$val['name_ad'].'</a></td>'
                         .'<td>'.$val['price'].'</td>'
                         .'<td>'.$val['name'].'</td>'
-                        .'<td><a href="?id='.$key.'">Удалить'.'</a></td>';
+                        .'<td><a href="?id='.$key.'&&del=1">Удалить'.'</a></td>';
                     echo '</tr>';
                 }
-                echo '</table>';
+                echo '</table>
+          </div><!--End ad_container -->';
             }
-            ?>
-    </div><!--End ad_container -->
+    ?>
 </div> <!--End container -->
 
 </body>

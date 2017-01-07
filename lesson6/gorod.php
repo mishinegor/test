@@ -28,7 +28,7 @@ $citys = array('641780'=>'Новосибирск','641490'=>'Барабинск'
             <option class="opt-group" disabled="disabled">-- Города --</option>
             <?php
                 foreach($citys as $number=>$city){
-                    echo '<option data-coords=",," value="'.$number.'">'.$city.'</option>'  //но теперь как то сюда нужно подставить что город нужный выбран -> selected=""
+                    echo '<option data-coords=",," value="'.$number.'">'.$city.'</option>' ; //но теперь как то сюда нужно подставить что город нужный выбран -> selected=""
                 }
             ?>
 </select>
