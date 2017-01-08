@@ -1,10 +1,10 @@
 ﻿<?php
     error_reporting( E_ERROR );
     session_start();
-    $id = uniqid(); //генерируем у никальный id обявления
+
 
     if(isset($_POST['add'])) {
-        $_SESSION['ads'][$id]=$_POST;
+            $_SESSION['ads'][]=$_POST;
     }
 
     if (isset($_GET['del'])) { //Удаление записи
@@ -25,6 +25,9 @@
         '543659'=>'Товары для дома',
         '543660'=>'Коампьютерная техника'
     ];
+
+    var_dump($_SESSION);
+    var_dump($_POST);
 
 
     //session_unset();
@@ -50,13 +53,13 @@
         </fieldset>
 
         <fieldset class="contacts_email">
-            <label>Ваше имя <input name="name" type="text" placeholder="<?php echo (isset($_GET['show_id']) ? $_SESSION['ads'][$_GET['show_id']]['name']: " ");?>" required></label><br/>
-            <label>Ваш email <input name="email" type="email"  placeholder="<?php echo (isset($_GET['show_id']) ? $_SESSION['ads'][$_GET['show_id']]['email']: " ");?>" required></label><br/>
+            <label>Ваше имя <input name="name" type="text" value="<?php echo (isset($_GET['show_id']) ? $_SESSION['ads'][$_GET['show_id']]['name']: " ");?>" required></label><br/>
+            <label>Ваш email <input name="email" type="email"  value="<?php echo (isset($_GET['show_id']) ? $_SESSION['ads'][$_GET['show_id']]['email']: " ");?>" required></label><br/>
             <label id="checkbox"><input name="confirm_rss" type="checkbox" <?php echo ($_SESSION['ads'][$_GET['show_id']]['confirm_rss']=="on" ?  'checked':''); ?>>Я хочу получать вопросы по объявлению на email</label><br/>
         </fieldset>
 
         <fieldset class="contacts_location">
-            <label>Ваш телефон <input name="phone" type="text" placeholder="<?php echo (isset($_GET['show_id']) ? $_SESSION['ads'][$_GET['show_id']]['phone']: " ");?>" required></label><br/>
+            <label>Ваш телефон <input name="phone" type="text" value="<?php echo (isset($_GET['show_id']) ? $_SESSION['ads'][$_GET['show_id']]['phone']: " ");?>" required></label><br/>
             <label>Ваш город
                 <select  name="city">
                     <option disabled>Выберите ваш город</option>
@@ -81,10 +84,10 @@
         </fieldset>
 
         <fieldset class="section_ad">
-            <label>Заголовок обявления<input name="name_ad" type="text" placeholder="<?php echo (isset($_GET['show_id']) ? $_SESSION['ads'][$_GET['show_id']]['name_ad']: " ");?>" required></label><br/>
+            <label>Заголовок обявления<input name="name_ad" type="text" value="<?php echo (isset($_GET['show_id']) ? $_SESSION['ads'][$_GET['show_id']]['name_ad']: " ");?>" required></label><br/>
             <p>Текст объявления</p>
-            <label><textarea name="ad" id="" cols="50" rows="10" placeholder="<?php echo (isset($_GET['show_id']) ? $_SESSION['ads'][$_GET['show_id']]['ad']: " ");?>" required></textarea></label><br/>
-            <label id="price">Цена <input name="price" type="text" size="5" placeholder="<?php echo (isset($_GET['show_id']) ? $_SESSION['ads'][$_GET['show_id']]['price']: " ");?>"> <span>руб</span></label><br/>
+            <label><textarea name="ad" id="" cols="50" rows="10" value="<?php echo (isset($_GET['show_id']) ? $_SESSION['ads'][$_GET['show_id']]['ad']: " ");?>" required></textarea></label><br/>
+            <label id="price">Цена <input name="price" type="text" size="5" value="<?php echo (isset($_GET['show_id']) ? $_SESSION['ads'][$_GET['show_id']]['price']: " ");?>"> <span>руб</span></label><br/>
         </fieldset>
         <input type="submit" value="Добавить объявление" class="buttons" name="add">
         <p id="notice">*Все поля обязательны для заполнения</p>
