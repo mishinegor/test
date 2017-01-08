@@ -2,9 +2,12 @@
     error_reporting( E_ERROR );
     session_start();
 
+    require_once('func.php');
+
+    $ads = $_SESSION['ads'];
 
     if(isset($_POST['add'])) {
-            $_SESSION['ads'][]=$_POST;
+        $_SESSION['ads'][]=$_POST;
     }
 
     if (isset($_GET['del'])) { //Удаление записи
@@ -25,6 +28,7 @@
         '543659'=>'Товары для дома',
         '543660'=>'Коампьютерная техника'
     ];
+
 
     var_dump($_SESSION);
     var_dump($_POST);
@@ -90,38 +94,13 @@
             <label id="price">Цена <input name="price" type="text" size="5" value="<?php echo (isset($_GET['show_id']) ? $_SESSION['ads'][$_GET['show_id']]['price']: " ");?>"> <span>руб</span></label><br/>
         </fieldset>
         <input type="submit" value="Добавить объявление" class="buttons" name="add">
+        <?php
+        $save_button ='<a href="?save=1" class="buttons">Сохранить</a>'; //Кнопка "Сохранить объявление"
+        echo (!empty($ads) ?  $save_button : ''); ?>
         <p id="notice">*Все поля обязательны для заполнения</p>
     </form>
 
-    <?php
-
-            if(!empty($_SESSION['ads'])) {
-                echo '
-                <h2>Ваши объявления: </h2>
-
-                <div id="ad_container">
-                                        
-                <table>
-                    <tr class="caption">'
-                    . '<td>Название</td>'
-                    . '<td>Цена</td>'
-                    . '<td>Имя владельца</td>'
-                    . '<td>Удалить</td>';
-
-                echo '</tr>';
-
-                foreach ($_SESSION['ads'] as $key => $val) {
-                    echo '<tr>'
-                        .'<td><a href="?show_id='.$key.'">'.$val['name_ad'].'</a></td>'
-                        .'<td>'.$val['price'].'</td>'
-                        .'<td>'.$val['name'].'</td>'
-                        .'<td><a href="?id='.$key.'&&del=1">Удалить'.'</a></td>';
-                    echo '</tr>';
-                }
-                echo '</table>
-          </div><!--End ad_container -->';
-            }
-    ?>
+    <?php show_table ($ads); ?>
 </div> <!--End container -->
 
 </body>
