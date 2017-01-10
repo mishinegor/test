@@ -106,7 +106,7 @@ input[name='price']{ /* Уменьшаем поле цена */
 
 input[type='submit']{
     width: 45%;
-    margin: 0 10%;
+    margin: 0 2%;
 }
 
 .buttons:hover {

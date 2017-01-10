@@ -1,4 +1,4 @@
-<?php require_once ('func.php');
+<?php require_once('func.php');
 
 /*
 * Задание Урока 4.
