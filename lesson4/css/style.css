@@ -1,0 +1,46 @@
+body {
+    font-size: 14px;
+    font-family: 'Verdana';
+    color:#666;
+}
+h1{
+    font-size: 1.8em;
+}
+h2 {
+
+}
+table {
+    width: 1200px;
+    max-width:90%;
+    margin: 2% auto;
+    border-spacing: 5px 0px;
+    border: 2px solid #cccccc;
+    padding: .3% 0;
+
+}
+
+tr.caption {
+    background-color: #cccccc;
+    font-weight:bold;
+    font-size: 1.2em;
+    color: #ffffff;
+}
+
+tr.caption td {
+    text-align: center;
+}
+tr {
+    color:#666;
+}
+
+td {
+    padding: 1.5%;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+div.container {
+    width: 1200px;
+    max-width: 90%;
+    margin: 0 auto;
+}
