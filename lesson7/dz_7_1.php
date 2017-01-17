@@ -49,8 +49,7 @@
 
 
 
-    var_dump($ads_ready);
-    var_dump($_SESSION);
+
 
 
     //Параметры GET
