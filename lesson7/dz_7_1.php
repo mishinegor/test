@@ -5,29 +5,53 @@
 
     include('functions.php');
 
+
     if(isset($_POST['add']) && !isset($_SESSION['ads'][$_GET['id']])) { // Добавление записи
         $_SESSION['ads'][]=$_POST;
-    }
-
-
-     add_cookie(); // создаём cookie
-    $ads_ready = unserialize($_COOKIE['ads']);
-
-
-    if(isset($_POST['save'])) {// Редактирование записи
-        $edition_ad = array_replace($ads_ready['ads'][$_GET['id']], $_POST);
-        $ads_ready['ads'][$_GET['id']] = $edition_ad;
-        unset($_GET['show'], $_POST['save']);
+        header('location: dz_7_1.php');
     }
 
     if (isset($_GET['del'])) { //Удаление записи
-        unset($ads_ready['ads'][$_GET['id']]);
+        unset($_SESSION['ads'][$_GET['id']]);
+        unset($_GET['del']);
+        header('location: dz_7_1.php');
+}
+
+    if(isset($_POST['save'])) {// Редактирование записи
+        $edition_ad = array_replace($_SESSION['ads'][$_GET['id']], $_POST);
+        $_SESSION['ads'][$_GET['id']] = $edition_ad;
+        unset($_GET['show'], $_POST['save']);
+        header('location: dz_7_1.php');
+    }
+
+    $session = $_SESSION;
+    $string_session = serialize($session);
+    setcookie('ads', $string_session, time()+3600*24*7);
+
+    $ads_ready = unserialize($_COOKIE['ads']);
+
+    if (empty($_SESSION)) {
+        $_SESSION = $ads_ready;
+
+        $session = $_SESSION;
+        $string_session = serialize($session);
+        setcookie('ads', $string_session, time()+3600*24*7);
+
+    }
+
+
+
+    if (isset($_GET['del'])) { //Удаление записи
+        unset($_SESSION['ads'][$_GET['id']]);
+        unset($_GET['del']);
+        header('location: dz_7_1.php');
     }
 
 
 
     var_dump($ads_ready);
-    var_dump($_GET);
+    var_dump($_SESSION);
+
 
     //Параметры GET
     $show_param = $_GET['show'];

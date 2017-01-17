@@ -1,9 +1,7 @@
 <?php
 
 function add_cookie () {
-    $session = $_SESSION;
-    $string_session = serialize($session);
-    setcookie('ads', $string_session, time()+3600*24*7);
+
 }
 
 function get_item($item) {
