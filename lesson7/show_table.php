@@ -28,7 +28,7 @@
                     .'<td><a href="?id='.$key.'&&show=1">'.$val['name_ad'].'</a></td>'
                     .'<td>'.$val['price'].'</td>'
                     .'<td>'.$val['name'].'</td>'
-                    .'<td><a href="?id='.$key.'&&del=1">Удалить'.'</a></td>';
+                    .'<td><a href="?id='.$key.'&del=1">Удалить'.'</a></td>';
                 echo '</tr>';
             }
             echo '</table>

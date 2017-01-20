@@ -1,72 +1,44 @@
 ﻿<?php
     error_reporting( E_ERROR );
 
-    session_start();
 
     include('functions.php');
 
+    if(isset($_POST['add'])) { // Добавление записи
 
-    if(isset($_POST['add']) && !isset($_SESSION['ads'][$_GET['id']])) { // Добавление записи
-        $_SESSION['ads'][]=$_POST;
-        header('location: dz_7_1.php');
+        if(isset($_COOKIE['ads'])) {
+            $data = unserialize($_COOKIE['ads']);
+        }
+
+        $data['ads'][]=$_POST;
+        $string_data = serialize($data);
+        setcookie('ads', $string_data, time()+3600*24*7);
+    }
+    $data = unserialize($_COOKIE['ads']);
+
+
+    if (isset($_GET['del']) && isset($_GET['id'])) { //Удаление записи
+        $data = unserialize($_COOKIE['ads']);
+        unset($data['ads'][$_GET['id']]);
+        setcookie('ads', $string_data, time()+3600*24*7);
     }
 
-    if (isset($_GET['del'])) { //Удаление записи
-        unset($_SESSION['ads'][$_GET['id']]);
-        unset($_GET['del']);
-        header('location: dz_7_1.php');
-}
-
-    if(isset($_POST['save'])) {// Редактирование записи
-        $edition_ad = array_replace($_SESSION['ads'][$_GET['id']], $_POST);
-        $_SESSION['ads'][$_GET['id']] = $edition_ad;
-        unset($_GET['show'], $_POST['save']);
-        header('location: dz_7_1.php');
-    }
-
-    $session = $_SESSION;
-    $string_session = serialize($session);
-    setcookie('ads', $string_session, time()+3600*24*7);
-
-    $ads_ready = unserialize($_COOKIE['ads']);
-
-    if (empty($_SESSION)) {
-        $_SESSION = $ads_ready;
-
-        $session = $_SESSION;
-        $string_session = serialize($session);
-        setcookie('ads', $string_session, time()+3600*24*7);
-
-    }
-
-
-
-    if (isset($_GET['del'])) { //Удаление записи
-        unset($_SESSION['ads'][$_GET['id']]);
-        unset($_GET['del']);
-        header('location: dz_7_1.php');
-    }
-
-
-
-
-
+    var_dump($_GET);
 
     //Параметры GET
+    $ads = $data['ads'];
     $show_param = $_GET['show'];
-
-    $ads = $ads_ready['ads'];
-    $name = $ads_ready['ads'][$_GET['id']]['name'];
-    $email = $ads_ready['ads'][$_GET['id']]['email'];
-    $radio_private = $ads_ready['ads'][$_GET['id']]['private'];
-    $radio_corp = $ads_ready['ads'][$_GET['id']]['corp'];
-    $checkbox_confirm = $ads_ready['ads'][$_GET['id']]['confirm_rss'];
-    $phone = $ads_ready['ads'][$_GET['id']]['phone'];
-    $city = $ads_ready['ads'][$_GET['id']]['city'];
-    $cat = $ads_ready['ads'][$_GET['id']]['cat'];
-    $name_ad=$ads_ready['ads'][$_GET['id']]['name_ad'];
-    $ad_text = $ads_ready['ads'][$_GET['id']]['ad'];
-    $price=$ads_ready['ads'][$_GET['id']]['price'];
+    $name = $data['ads'][$_GET['id']]['name'];
+    $email = $data['ads'][$_GET['id']]['email'];
+    $radio_private = $data['ads'][$_GET['id']]['private'];
+    $radio_corp = $data['ads'][$_GET['id']]['corp'];
+    $checkbox_confirm = $data['ads'][$_GET['id']]['confirm_rss'];
+    $phone = $data['ads'][$_GET['id']]['phone'];
+    $city = $data['ads'][$_GET['id']]['city'];
+    $cat = $data['ads'][$_GET['id']]['cat'];
+    $name_ad=$data['ads'][$_GET['id']]['name_ad'];
+    $ad_text = $data['ads'][$_GET['id']]['ad'];
+    $price = $data['ads'][$_GET['id']]['price'];
 
     // массив select cities
     $cities=[
