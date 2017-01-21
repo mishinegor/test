@@ -5,7 +5,6 @@
         $save_button ='<input type="submit" class="buttons" name="save" value="Сохранить обявление">'; //Кнопка "Сохранить объявление"
         echo (!empty($ads) ?  $save_button : '');
     }
-
     function show_table ($ads) {
 
         if(!empty($ads)) {
@@ -25,11 +24,12 @@
 
             foreach ($ads as $key => $val) {
                 echo '<tr>'
-                    .'<td><a href="?id='.$key.'&&show=1">'.$val['name_ad'].'</a></td>'
+                    .'<td><a href="?id='.$key.'&show=1">'.$val['name_ad'].'</a></td>'
                     .'<td>'.$val['price'].'</td>'
                     .'<td>'.$val['name'].'</td>'
                     .'<td><a href="?id='.$key.'&del=1">Удалить'.'</a></td>';
                 echo '</tr>';
+
             }
             echo '</table>
                   </div><!--End ad_container -->';

@@ -1,9 +1,5 @@
 <?php
 
-function add_cookie () {
-
-}
-
 function get_item($item) {
     $show_param = $_GET['show'];
     if(isset($show_param)){
