@@ -3,33 +3,31 @@
 
 
     include('functions.php');
-
+        $data=array();
        global $id; //id объявления
+
 
 
     if(isset($_POST['add'])) { // Добавление записи
         if(isset($_COOKIE['ads'])) {
-            $data= unserialize($_COOKIE['ads']);
+            $data = unserialize($_COOKIE['ads']);
         }
 
         $data['ads'][]=$_POST;
         $string_data = serialize($data);
         setcookie('ads', $string_data, time()+3600*24*7);
+
+        foreach ($data['ads'] as $key => $val) { // Получаем id объявления
+            $id=$key;
+        }
     }
-
-    $data= unserialize($_COOKIE['ads']);
-
-    foreach ($data['ads'] as $key => $val) { // Получаем id объявления
-      $id=$key;
-    }
-
 
     if (isset($_GET['del']) && isset($_GET['id'])) { //Удаление записи
         unset($data['ads'][$_GET['id']]);
         $string_data = serialize($data);
         setcookie('ads', $string_data, time()+3600*24*7);
         $data = unserialize($_COOKIE['ads']);
-        //header('location: dz_7_1.php');
+        header('location: dz_7_1.php');
     }
 
     if(isset($_GET['show']) && $data['ads']['id'] == $_GET['id']) {// Редактирование записи
@@ -42,10 +40,6 @@
     } else {
         $button_value = "Добавить объявление";
     }
-
-var_dump($_GET);
-var_dump($data);
-var_dump($id);
 
 
     //Параметры GET
