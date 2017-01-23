@@ -1,16 +1,9 @@
 <?php
 
-    function save_button($ads) {
-
-        $save_button ='<input type="submit" class="buttons" name="save" value="Сохранить обявление">'; //Кнопка "Сохранить объявление"
-        echo (!empty($ads) ?  $save_button : '');
-    }
     function show_table ($ads) {
 
         if(!empty($ads)) {
-            echo '
-                        <h2>Ваши объявления: </h2>
-        
+            echo '        
                         <div id="ad_container">
                                                 
                         <table>

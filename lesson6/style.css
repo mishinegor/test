@@ -27,7 +27,7 @@ div.container {
 /* Стиль формы */
 
 form, div#ad_container {
-    width: 45%;
+    width: 41%;
     margin: 3% auto;
     padding: 3%;
     background-color: white;
@@ -105,8 +105,8 @@ input[name='price']{ /* Уменьшаем поле цена */
 }
 
 input[type='submit']{
-    width: 45%;
-    margin: 0 2%;
+    width: 48%;
+    margin: 0 auto;
 }
 
 .buttons:hover {

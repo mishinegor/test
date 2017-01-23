@@ -3,21 +3,25 @@
 
 
     include('functions.php');
-     $data = array();
-     global $id; //id объявления
+     global $data;
+
+    $show_param = filter_var($_GET['show'], FILTER_SANITIZE_URL);
+    $id = filter_var($_GET['id'], FILTER_SANITIZE_URL);
+
     $id = $_GET['show'];
     $button_value="Добавить объявление";
-
 
     if(isset($_POST['add'])) { // Добавление записи
         if(isset($_COOKIE['ads'])) {
             $data = unserialize($_COOKIE['ads']);
         }
 
-        if(!empty($_POST['id']) && $data['ads'][$_POST['id']]){
+        unset($_GET['del']);
+
+        if(isset($_GET['show']) && isset($data['ads'][$_POST['id']])){
             $edition_ad = array_replace($data['ads'][$_POST['id']], $_POST);
             $data['ads'][$_POST['id']] = $edition_ad;
-            unset($_GET['show']);
+            header('location: dz_7_1.php');// чистим url строку
         } else {
             $data['ads'][]=$_POST;
         }
@@ -37,25 +41,18 @@
         setcookie('ads', $string_data, time()+3600*24*7);
     }
 
-    var_dump($data);
-    var_dump($_POST);
-
-
-
     //Параметры GET
-    $ads = $data['ads'];
-    $show_param = $_GET['show'];
-    $name = $data['ads'][$_GET['id']]['name'];
-    $email = $data['ads'][$_GET['id']]['email'];
-    $radio_private = $data['ads'][$_GET['id']]['private'];
-    $radio_corp = $data['ads'][$_GET['id']]['corp'];
-    $checkbox_confirm = $data['ads'][$_GET['id']]['confirm_rss'];
-    $phone = $data['ads'][$_GET['id']]['phone'];
-    $city = $data['ads'][$_GET['id']]['city'];
-    $cat = $data['ads'][$_GET['id']]['cat'];
-    $name_ad=$data['ads'][$_GET['id']]['name_ad'];
-    $ad_text = $data['ads'][$_GET['id']]['ad'];
-    $price = $data['ads'][$_GET['id']]['price'];
+    $name = $data['ads'][$id]['name'];
+    $email = $data['ads'][$id]['email'];
+    $radio_private = $data['ads'][$id]['private'];
+    $radio_corp = $data['ads'][$id]['corp'];
+    $checkbox_confirm = $data['ads'][$id]['confirm_rss'];
+    $phone = $data['ads'][$id]['phone'];
+    $city = $data['ads'][$id]['city'];
+    $cat = $data['ads'][$id]['cat'];
+    $name_ad=$data['ads'][$id]['name_ad'];
+    $ad_text = $data['ads'][$id]['ad'];
+    $price = $data['ads'][$id]['price'];
 
     // массив select cities
     $cities=[
@@ -117,17 +114,17 @@
         <fieldset class="section_ad">
             <label>Заголовок обявления<input name="name_ad" type="text" value="<?php get_item($name_ad); ?>" required></label><br/>
             <p>Текст объявления</p>
-            <label><textarea name="ad" id="" cols="50" rows="10"  required> <?php get_item($ad_text); ?> </textarea></label><br/>
+            <label><textarea name="ad" id="" cols="40" rows="10"  required> <?php get_item($ad_text); ?> </textarea></label><br/>
             <label id="price">Цена <input name="price" type="text" size="5" value="<?php get_item($price); ?>"> <span>руб</span> </label><br/>
         </fieldset>
         <input type="submit" value="<?php echo $button_value ?>" class="buttons" name="add">
-        <input type="hidden"  name="id" value="<?php print $id; ?>">
+        <input type="hidden"  name="id" value="<?php print $show_param; ?>">
         <p id="notice">*Все поля обязательны для заполнения</p>
     </form>
 
     <?php
         include('show_table.php');
-        show_table ($ads);
+        show_table ($data['ads']);
     ?>
 </div> <!--End container -->
 
