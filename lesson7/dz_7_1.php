@@ -3,9 +3,10 @@
 
 
     include('functions.php');
-        $data=array();
-       global $id; //id объявления
-
+     $data = array();
+     global $id; //id объявления
+    $id = $_GET['show'];
+    $button_value="Добавить объявление";
 
 
     if(isset($_POST['add'])) { // Добавление записи
@@ -13,33 +14,32 @@
             $data = unserialize($_COOKIE['ads']);
         }
 
-        $data['ads'][]=$_POST;
+        if(!empty($_POST['id']) && $data['ads'][$_POST['id']]){
+            $edition_ad = array_replace($data['ads'][$_POST['id']], $_POST);
+            $data['ads'][$_POST['id']] = $edition_ad;
+            unset($_GET['show']);
+        } else {
+            $data['ads'][]=$_POST;
+        }
         $string_data = serialize($data);
         setcookie('ads', $string_data, time()+3600*24*7);
 
-        foreach ($data['ads'] as $key => $val) { // Получаем id объявления
-            $id=$key;
+    } else {
+        if (isset($_GET['show'])){
+            $button_value="Сохранить объявление";
         }
+        $data = unserialize($_COOKIE['ads']);
     }
 
-    if (isset($_GET['del']) && isset($_GET['id'])) { //Удаление записи
+    if (isset($_GET['del']) && isset($data['ads'][$_GET['id']])) { //Удаление записи
         unset($data['ads'][$_GET['id']]);
         $string_data = serialize($data);
         setcookie('ads', $string_data, time()+3600*24*7);
-        $data = unserialize($_COOKIE['ads']);
-        header('location: dz_7_1.php');
     }
 
-    if(isset($_GET['show']) && $data['ads']['id'] == $_GET['id']) {// Редактирование записи
-        $button_value = "Сохранить объявление";
-        $edition_ad = array_replace($data['ads'][$_GET['id']], $_POST);
-        $data['ads'][$_GET['id']] = $edition_ad;
-        $string_data = serialize($data);
-        setcookie('ads', $string_data, time()+3600*24*7);
-        $data = unserialize($_COOKIE['ads']);
-    } else {
-        $button_value = "Добавить объявление";
-    }
+    var_dump($data);
+    var_dump($_POST);
+
 
 
     //Параметры GET
