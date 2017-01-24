@@ -11,7 +11,7 @@
     $show_param = filter_var($_GET['show'], FILTER_SANITIZE_URL);
     $id = filter_var($_GET['id'], FILTER_SANITIZE_URL);
 
-    $id = $_GET['show'];
+     $id = $_GET['show'];
     $button_value="Добавить объявление";
 
     if(isset($_POST['add'])) { // Добавление записи
