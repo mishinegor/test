@@ -1,11 +1,12 @@
 ﻿<?php
-
-    // Запмсь в cookie
+  // Запмсь в файл
     error_reporting( E_ERROR );
 
 
     include('functions.php');
      global $data;
+     global $data_temp;
+     $data_temp=array();
 
     $show_param = filter_var($_GET['show'], FILTER_SANITIZE_URL);
     $id = filter_var($_GET['id'], FILTER_SANITIZE_URL);
@@ -14,8 +15,8 @@
     $button_value="Добавить объявление";
 
     if(isset($_POST['add'])) { // Добавление записи
-        if(isset($_COOKIE['ads'])) {
-            $data = unserialize($_COOKIE['ads']);
+        if(isset($data_temp)) {
+            $data = unserialize($data_temp);
         }
 
         unset($_GET['del']);
@@ -28,19 +29,21 @@
             $data['ads'][]=$_POST;
         }
         $string_data = serialize($data);
-        setcookie('ads', $string_data, time()+3600*24*7);
-
+       file_put_contents('test.html', $string_data, FILE_APPEND);
+        $data_temp = file_get_contents('test.html');
     } else {
         if (isset($_GET['show'])){
             $button_value="Сохранить объявление";
         }
-        $data = unserialize($_COOKIE['ads']);
+        $data = unserialize($data_temp);
     }
 
     if (isset($_GET['del']) && isset($data['ads'][$_GET['id']])) { //Удаление записи
         unset($data['ads'][$_GET['id']]);
         $string_data = serialize($data);
-        setcookie('ads', $string_data, time()+3600*24*7);
+        file_put_contents('test.html', $string_data, FILE_APPEND);
+        $data_temp = file_get_contents('test.html');
+        $data = unserialize($data_temp);
     }
 
     //Параметры GET
@@ -70,6 +73,7 @@
         '543659'=>'Товары для дома',
         '543660'=>'Коампьютерная техника'
     ];
+
 
 ?>
 <!doctype html>
