@@ -11,11 +11,11 @@
     $show_param = filter_var($_GET['show'], FILTER_SANITIZE_URL);
     $id = filter_var($_GET['id'], FILTER_SANITIZE_URL);
 
-     $id = $_GET['show'];
     $button_value="Добавить объявление";
 
     if(isset($_POST['add'])) { // Добавление записи
         if(isset($data_temp)) {
+            $data_temp = file_get_contents('test.html');
             $data = unserialize($data_temp);
         }
 
@@ -24,29 +24,33 @@
         if(isset($_GET['show']) && isset($data['ads'][$_POST['id']])){
             $edition_ad = array_replace($data['ads'][$_POST['id']], $_POST);
             $data['ads'][$_POST['id']] = $edition_ad;
-            header('location: dz_7_1.php');// чистим url строку
+            $string_data = serialize($data);
+            file_put_contents('test.html', $string_data);
+            header('location: dz_7_2.php');// чистим url строку
         } else {
             $data['ads'][]=$_POST;
         }
         $string_data = serialize($data);
-       file_put_contents('test.html', $string_data, FILE_APPEND);
-        $data_temp = file_get_contents('test.html');
+        file_put_contents('test.html', $string_data);
     } else {
         if (isset($_GET['show'])){
             $button_value="Сохранить объявление";
         }
-        $data = unserialize($data_temp);
     }
+
+    $data_temp = file_get_contents('test.html');
+    $data = unserialize($data_temp);
 
     if (isset($_GET['del']) && isset($data['ads'][$_GET['id']])) { //Удаление записи
         unset($data['ads'][$_GET['id']]);
         $string_data = serialize($data);
-        file_put_contents('test.html', $string_data, FILE_APPEND);
+        file_put_contents('test.html', $string_data);
         $data_temp = file_get_contents('test.html');
         $data = unserialize($data_temp);
     }
 
     //Параметры GET
+
     $name = $data['ads'][$id]['name'];
     $email = $data['ads'][$id]['email'];
     $radio_private = $data['ads'][$id]['private'];
@@ -133,6 +137,5 @@
         show_table ($data['ads']);
     ?>
 </div> <!--End container -->
-
 </body>
 </html>

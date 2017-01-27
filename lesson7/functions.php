@@ -20,4 +20,4 @@ function select_option($items, $selected_item)
         echo '<option data-coords=",," ' . $selected . ' value="' . $item_id . '">' . $val . '</option>';
     }
 }
- ?>
+?>
