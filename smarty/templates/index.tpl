@@ -1,3 +1,4 @@
+{php} extract($var_array) {/php}
 <!doctype html>
 <html lang="en-ru">
 <head>
@@ -13,34 +14,34 @@
 	<h1>Подайте объявление:</h1>
 	<form  method="post" id="add">
 		<fieldset class="radio">
-			<label><input name="private" type="radio" {$radio_private}>Частное лицо</label>
-			<label><input name="corp" type="radio" {$radio_corp}>Компания</label>
+			<label><input name="private" type="radio" {$var_array.radio_private}>Частное лицо</label>
+			<label><input name="corp" type="radio" {$var_array.radio_corp}>Компания</label>
 		</fieldset>
 
 		<fieldset class="contacts_email">
-			<label>Ваше имя <input name="name" type="text" value="{$name}" required></label><br/>
-			<label>Ваш email <input name="email" type="email"  value="{$email}" required></label><br/>
-			<label id="checkbox"><input name="confirm_rss" type="checkbox" {$checkbox_confirm}>Я хочу получать вопросы по объявлению на email</label><br/>
+			<label>Ваше имя <input name="name" type="text" value="{$var_array.name}" required></label><br/>
+			<label>Ваш email <input name="email" type="email"  value="{$var_array.email}" required></label><br/>
+			<label id="checkbox"><input name="confirm_rss" type="checkbox" {$var_array.checkbox_confirm}>Я хочу получать вопросы по объявлению на email</label><br/>
 		</fieldset>
 
 		<fieldset class="contacts_location">
-			<label>Ваш телефон <input name="phone" type="text" value="{$phone}" required></label><br/>
+			<label>Ваш телефон <input name="phone" type="text" value="{$var_array.phone}" required></label><br/>
 			<label>Ваш город
-                    {html_options name=city options=$cities selected=$city_id}
+                    {html_options name=city options=$cities selected=$var_array.city_id}
 			</label><br/>
 			<label>Категория товара
-					{html_options name=cat options=$cat selected=$cat_id}
+					{html_options name=cat options=$cat selected=$var_array.cat_id}
 			</label>
 		</fieldset>
 
 		<fieldset class="section_ad">
-			<label>Заголовок обявления<input name="name_ad" type="text" value="{$ad_name}" required></label><br/>
+			<label>Заголовок обявления<input name="name_ad" type="text" value="{$var_array.name_ad}" required></label><br/>
 			<p>Текст объявления</p>
-			<label><textarea name="ad" id="" cols="40" rows="10"  required> {$ad_text} </textarea></label><br/>
-			<label id="price">Цена <input name="price" type="text" size="5" value="{$price}"> <span>руб</span> </label><br/>
+			<label><textarea name="ad" id="" cols="40" rows="10"  required> {$var_array.ad_text} </textarea></label><br/>
+			<label id="price">Цена <input name="price" type="text" size="5" value="{$var_array.price}"> <span>руб</span> </label><br/>
 		</fieldset>
-		<input type="submit" value="{$button_value}" class="buttons" name="add">
-		<input type="hidden"  name="id" value="{$show_param}">
+		<input type="submit" value="{$var_array.button_value}" class="buttons" name="add">
+		<input type="hidden"  name="id" value="{$var_array.show_param}">
 		<p id="notice">*Все поля обязательны для заполнения</p>
 	</form>
         {include file ='show_table.tpl'}

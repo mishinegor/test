@@ -4,9 +4,7 @@
 
 
     include('functions.php');
-     global $data;
-     global $data_temp;
-     $data_temp=array();
+    $filename = 'test.html';
 
     $show_param = filter_var($_GET['show'], FILTER_SANITIZE_URL);
     $id = filter_var($_GET['id'], FILTER_SANITIZE_URL);
@@ -14,54 +12,63 @@
     $button_value="Добавить объявление";
 
     if(isset($_POST['add'])) { // Добавление записи
-        if(isset($data_temp)) {
-            $data_temp = file_get_contents('test.html');
+        if(file_exists($filename) && is_writable($filename)) {
+            $data_temp = file_get_contents($filename);
             $data = unserialize($data_temp);
+        } else {
+            die ("Файл". $filename ."недоступен");
         }
 
-        unset($_GET['del']);
+        if(isset($_GET['del'])){
+            unset($_GET['del']);
+        }
 
         if(isset($_GET['show']) && isset($data['ads'][$_POST['id']])){
             $edition_ad = array_replace($data['ads'][$_POST['id']], $_POST);
             $data['ads'][$_POST['id']] = $edition_ad;
-            $string_data = serialize($data);
-            file_put_contents('test.html', $string_data);
-            header('location: dz_7_2.php');// чистим url строку
+            header('location: dz_7_2.php');
+
         } else {
             $data['ads'][]=$_POST;
         }
+
         $string_data = serialize($data);
-        file_put_contents('test.html', $string_data);
-    } else {
+        file_put_contents($filename , $string_data);
+
+    }
         if (isset($_GET['show'])){
             $button_value="Сохранить объявление";
-        }
     }
 
-    $data_temp = file_get_contents('test.html');
+    $data_temp = file_get_contents($filename);
     $data = unserialize($data_temp);
 
     if (isset($_GET['del']) && isset($data['ads'][$_GET['id']])) { //Удаление записи
         unset($data['ads'][$_GET['id']]);
-        $string_data = serialize($data);
-        file_put_contents('test.html', $string_data);
-        $data_temp = file_get_contents('test.html');
-        $data = unserialize($data_temp);
     }
 
-    //Параметры GET
+    $string_data = serialize($data);
+    file_put_contents($filename, $string_data);
+    $data_temp = file_get_contents($filename);
+    $data = unserialize($data_temp);
 
-    $name = $data['ads'][$id]['name'];
-    $email = $data['ads'][$id]['email'];
-    $radio_private = $data['ads'][$id]['private'];
-    $radio_corp = $data['ads'][$id]['corp'];
-    $checkbox_confirm = $data['ads'][$id]['confirm_rss'];
-    $phone = $data['ads'][$id]['phone'];
-    $city = $data['ads'][$id]['city'];
-    $cat = $data['ads'][$id]['cat'];
-    $name_ad=$data['ads'][$id]['name_ad'];
-    $ad_text = $data['ads'][$id]['ad'];
-    $price = $data['ads'][$id]['price'];
+
+    //Массив переменных
+$var_array =[
+    'name' => $data['ads'][$id]['name'],
+    'email' => $data['ads'][$id]['email'],
+    'radio_private' => $data['ads'][$id]['private'],
+    'radio_corp' => $data['ads'][$id]['corp'],
+    'checkbox_confirm' => $data['ads'][$id]['confirm_rss'],
+    'phone' => $data['ads'][$id]['phone'],
+    'city' => $data['ads'][$id]['city'],
+    'cat' => $data['ads'][$id]['cat'],
+    'name_ad' => $data['ads'][$id]['name_ad'],
+    'ad_text' => $data['ads'][$id]['ad'],
+    'price' => $data['ads'][$id]['price']
+];
+    extract($var_array);
+
 
     // массив select cities
     $cities=[
