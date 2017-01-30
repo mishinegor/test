@@ -1,24 +1,23 @@
 ﻿<?php
 // Запмсь в файл
 error_reporting( E_ERROR );
-
+$filename = 'test.html';
 
 include('functions.php');
-$filename = 'test.html';
 
 $show_param = filter_var($_GET['show'], FILTER_SANITIZE_URL);
 $id = filter_var($_GET['id'], FILTER_SANITIZE_URL);
 
 $button_value="Добавить объявление";
 
-if(isset($_POST['add'])) { // Добавление записи
-    if(file_exists($filename) && is_writable($filename)) {
-        $data_temp = file_get_contents($filename);
-        $data = unserialize($data_temp);
-    } else {
-        die ("Файл". $filename ."недоступен");
-    }
+if(file_exists($filename) && is_writable($filename)) {
+    $data_temp = file_get_contents($filename);
+} else {
+    die ("Файл". $filename ."недоступен");
+}
 
+
+if(isset($_POST['add'])) { // Добавление записи
     if(isset($_GET['del'])){
         unset($_GET['del']);
     }
@@ -31,17 +30,10 @@ if(isset($_POST['add'])) { // Добавление записи
     } else {
         $data['ads'][]=$_POST;
     }
-
-    $string_data = serialize($data);
-    file_put_contents($filename , $string_data);
-
 }
 if (isset($_GET['show'])){
     $button_value="Сохранить объявление";
 }
-
-$data_temp = file_get_contents($filename);
-$data = unserialize($data_temp);
 
 if (isset($_GET['del']) && isset($data['ads'][$_GET['id']])) { //Удаление записи
     unset($data['ads'][$_GET['id']]);
