@@ -15,12 +15,12 @@ $button_value="Добавить объявление";
         'root',
         '',
         'ads_base'
-    ) or die("Невозвожно подключится к базе данных, код ошибки:".mysqli_connect_error());
+    ) or die("Невозвожно подключиться к базе данных, код ошибки:".mysqli_connect_error());
 
     mysqli_set_charset($db, 'utf8');
 
 
-    $result_cities = mysqli_query($db, 'select * from cities'); // вывод городов из БД
+    $result_cities = mysqli_query($db, 'select * from cities') or die( "Невозвожно выполнить запрос, код ошибки :".mysqli_error($db));// вывод городов из БД
     while($row_cities = mysqli_fetch_assoc($result_cities)){
         $cities[$row_cities['id']]= $row_cities['city_name'];
     }
