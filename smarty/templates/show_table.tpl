@@ -1,4 +1,4 @@
-{if !empty($ads) && isset($name)}
+{if !empty($ads)}
         <div id="ad_container">
             <table>
                 <tr class="caption">
