@@ -41,7 +41,10 @@ if(isset($_POST['add'])) { // Добавление записи
         unset($data['ads'][$_GET['id']]);
     }
 
-    extract($data['ads'][$id]);
+    if(isset($data['ads'][$id]) && !empty($data['ads'][$id])){
+        extract($data['ads'][$id]);
+    }
+
 
     // массив select cities
     $cities=[
