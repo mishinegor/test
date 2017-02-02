@@ -10,12 +10,13 @@ $id = filter_var($_GET['id'], FILTER_SANITIZE_URL);
 
 $button_value="Добавить объявление";
 
+
 if(file_exists($filename) && is_writable($filename)) {
     $data_temp = file_get_contents($filename);
+    $data = unserialize($data_temp);
 } else {
     die ("Файл". $filename ."недоступен");
 }
-
 
 if(isset($_POST['add'])) { // Добавление записи
     if(isset($_GET['del'])){
@@ -35,14 +36,10 @@ if (isset($_GET['show'])){
     $button_value="Сохранить объявление";
 }
 
+
 if (isset($_GET['del']) && isset($data['ads'][$_GET['id']])) { //Удаление записи
     unset($data['ads'][$_GET['id']]);
 }
-
-$string_data = serialize($data);
-file_put_contents($filename, $string_data);
-$data_temp = file_get_contents($filename);
-$data = unserialize($data_temp);
 
 // массив select cities
 $cities=[
@@ -58,6 +55,11 @@ $categories=[
     '543659'=>'Товары для дома',
     '543660'=>'Коампьютерная техника'
 ];
+$string_data = serialize($data);
+file_put_contents($filename, $string_data);
+$data_temp = file_get_contents($filename);
+$data_raw= unserialize($data_temp);
+$data['ads']= array_filter($data_raw['ads']);
 
 //Массив переменных
 $var_array =[

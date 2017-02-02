@@ -10,12 +10,13 @@
 
     $button_value="Добавить объявление";
 
+
     if(file_exists($filename) && is_writable($filename)) {
         $data_temp = file_get_contents($filename);
+        $data = unserialize($data_temp);
     } else {
         die ("Файл". $filename ."недоступен");
     }
-
 
 if(isset($_POST['add'])) { // Добавление записи
         if(isset($_GET['del'])){
@@ -34,6 +35,7 @@ if(isset($_POST['add'])) { // Добавление записи
         if (isset($_GET['show'])){
             $button_value="Сохранить объявление";
     }
+
 
     if (isset($_GET['del']) && isset($data['ads'][$_GET['id']])) { //Удаление записи
         unset($data['ads'][$_GET['id']]);
@@ -59,7 +61,11 @@ if(isset($_POST['add'])) { // Добавление записи
     $string_data = serialize($data);
     file_put_contents($filename, $string_data);
     $data_temp = file_get_contents($filename);
-    $data = unserialize($data_temp);
+    $data_raw= unserialize($data_temp);
+    $data['ads']= array_filter($data_raw['ads']);
+
+
+
 
 ?>
 <!doctype html>
@@ -106,7 +112,7 @@ if(isset($_POST['add'])) { // Добавление записи
         <fieldset class="section_ad">
             <label>Заголовок обявления<input name="name_ad" type="text" value="<?php get_item($name_ad); ?>" required></label><br/>
             <p>Текст объявления</p>
-            <label><textarea name="ad" id="" cols="40" rows="10"  required> <?php get_item($ad_text); ?> </textarea></label><br/>
+            <label><textarea name="ad" id="" cols="40" rows="10"  required> <?php get_item($ad); ?> </textarea></label><br/>
             <label id="price">Цена <input name="price" type="text" size="5" value="<?php get_item($price); ?>"> <span>руб</span> </label><br/>
         </fieldset>
         <input type="submit" value="<?php echo $button_value ?>" class="buttons" name="add">
