@@ -61,14 +61,6 @@ if(isset($_POST['add'])) { // Добавление записи
         '543660'=>'Коампьютерная техника'
     ];
 
-    $string_data = serialize($data);
-    file_put_contents($filename, $string_data);
-    $data_temp = file_get_contents($filename);
-    $data_raw= unserialize($data_temp);
-    $data['ads']= array_filter($data_raw['ads']);
-
-
-
 
 ?>
 <!doctype html>
@@ -130,3 +122,9 @@ if(isset($_POST['add'])) { // Добавление записи
 </div> <!--End container -->
 </body>
 </html>
+
+<?php
+    $string_data = serialize($data);
+    file_put_contents($filename, $string_data);
+    $data_temp = file_get_contents($filename);
+?>
