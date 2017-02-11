@@ -47,6 +47,8 @@ mysqli_set_charset($db, 'utf8');
     $del_query = mysqli_prepare($db, "DELETE FROM ads WHERE id = ?");
     mysqli_stmt_bind_param($del_query, 'i', $id);
 
+    $update_query = mysqli_prepare($db, "UPDATE  ads SET ID = ?, PRIVATE = ?, CORP = ?, NAME = ?, EMAIL = ?, CONFIRM_RSS = ?, PHONE = ?, CITY = ?, CATEGORY = ?, NAME_AD = ?, AD_TEXT = ?, PRICE = ? WHERE id=?");
+    mysqli_stmt_bind_param($update_query, 'issssssiissii', $id ,$_POST['private'], $_POST['corp'], $validate_data['name'], $validate_data['email'], $validate_data['confirm_rss'], $validate_data['phone'],$_POST['city'], $_POST['cat'], $validate_data['name_ad'], $validate_data['ad'], $validate_data['price'], $_POST['id']);
 
 if(isset($_POST['add'])) { // Добавление записи
     if(isset($_GET['del'])){
@@ -56,10 +58,9 @@ if(isset($_POST['add'])) { // Добавление записи
     if(isset($_GET['show'])){
         $edition_ad = array_replace($data['ads'][$_POST['id']], $_POST);
         $data['ads'][$_POST['id']] = $edition_ad;
-        $update_query = mysqli_prepare($db, "UPDATE  ads SET ID = ?, PRIVATE = ?, CORP = ?, NAME = ?, EMAIL = ?, CONFIRM_RSS = ?, PHONE = ?, CITY = ?, CATEGORY = ?, NAME_AD = ?, AD_TEXT = ?, PRICE = ? WHERE id=?");
-        mysqli_stmt_bind_param($update_query, 'issssssiissii', $id ,$_POST['private'], $_POST['corp'], $validate_data['name'], $validate_data['email'], $validate_data['confirm_rss'], $validate_data['phone'],$_POST['city'], $_POST['cat'], $validate_data['name_ad'], $validate_data['ad'], $validate_data['price'], $_POST['id']);
-
-        mysqli_stmt_execute($update_query);
+        if($update_query) {
+            mysqli_stmt_execute($update_query);
+        }
         header('location: index.php');
 
     } else {
