@@ -1,4 +1,4 @@
-<?php
+<?php ##
 
 $project_root = $_SERVER['DOCUMENT_ROOT'];
 
