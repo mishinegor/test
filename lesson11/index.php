@@ -11,7 +11,34 @@ $id = filter_var($_GET['id'], FILTER_SANITIZE_URL);
 
 $button_value="Добавить объявление";
 
+class ad
+{
+    public $private;
+    public $corp;
+    public $name;
+    public $email;
+    public $city_name;
+    public $cat_name;
+    public $ad_name;
+    public $ad_text;
+    public $price;
 
+    function __construct()
+    {
+        $this->
+    }
+}
+$cities_result = $db->select('SELECT *  FROM cities');
+foreach($cities_result as $key => $val) {
+$cities[$val['id']] = $val['city_name'];
+}
+
+    $cat_result = $db->select('SELECT * FROM categories');
+    foreach($cat_result as $key => $val) {
+    $categories[$val['id']] = $val['category'];
+}
+
+}
 
 
 mysqli_set_charset($db, 'utf8');

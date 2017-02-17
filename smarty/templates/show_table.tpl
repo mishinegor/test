@@ -11,7 +11,7 @@
 
                 {foreach from = $ads key = key item = val}
                     <tr>
-                        <td><a href="?id={$key}&show={$key}">{$val.name_ad}</a></td>
+                        <td><a href="?show={$key}">{$val.name_ad}</a></td>
                         <td>{$val.price}</td>
                         <td>{$val.name}</td>
                         <td><a href="?id={$key}&del=1">Удалить</a></td>

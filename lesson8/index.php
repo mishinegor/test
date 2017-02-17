@@ -26,7 +26,7 @@ if(isset($_POST['add'])) { // Добавление записи
     if(isset($_GET['show']) && isset($data['ads'][$_POST['id']])){
         $edition_ad = array_replace($data['ads'][$_POST['id']], $_POST);
         $data['ads'][$_POST['id']] = $edition_ad;
-        header('location: dz_7_2.php');
+        header('location: index.php');
 
     } else {
         $data['ads'][]=$_POST;
@@ -48,6 +48,15 @@ $cities=[
     '543646'=>'Минск'
 ];
 
+$rss_confirm=[
+    'checked' =>'Я хочу получать вопросы по объявлению на email',
+];
+
+$business_type=[
+    'private' =>'Частное лицо',
+    'corp' =>'Компания'
+];
+
 // массив select categories
 
 $categories=[
@@ -55,28 +64,11 @@ $categories=[
     '543659'=>'Товары для дома',
     '543660'=>'Коампьютерная техника'
 ];
+
 $string_data = serialize($data);
 file_put_contents($filename, $string_data);
-$data_temp = file_get_contents($filename);
-$data_raw= unserialize($data_temp);
-$data['ads']= array_filter($data_raw['ads']);
 
 //Массив переменных
-$var_array =[
-    'name' => get_item($data['ads'][$id]['name']),
-    'email' => get_item($data['ads'][$id]['email']),
-    'radio_private' => get_result($data['ads'][$id]['private'], $show_param),
-    'radio_corp' => get_result($data['ads'][$id]['corp'], $show_param),
-    'checkbox_confirm' => get_result($data['ads'][$id]['confirm_rss'], $show_param),
-    'phone' => get_item($data['ads'][$id]['phone']),
-    'city_id' => select_option($cities, $data['ads'][$id]['city']),
-    'cat_id' => select_option($cities, $data['ads'][$id]['cat']),
-    'name_ad' =>  get_item($data['ads'][$id]['name_ad']),
-    'ad_text' =>  get_item($data['ads'][$id]['ad']),
-    'price' => get_item($data['ads'][$id]['price']),
-    'show_param' => $show_param,
-    'button_value' => $button_value
-];
 
 // SMARTY
 
@@ -97,9 +89,13 @@ $var_array =[
 
 
     $smarty->assign('ads', $data['ads']);
+    $smarty->assign('button_value', $button_value);
+    $smarty->assign('show_param', $show_param);
     $smarty->assign('cat', $categories);
     $smarty->assign('cities', $cities);
-    $smarty->assign('var_array', $var_array);
+    $smarty->assign('rss_confirm', $rss_confirm);
+    $smarty->assign('business_type', $business_type);
+    $smarty->assign('var_array', $data['ads'][$show_param]);
 
 
 
