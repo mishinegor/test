@@ -5,6 +5,9 @@ $filename = 'test.html';
 
 include('functions.php');
 
+// put full path to Smarty.class.php
+require( $smarty_dir.'libs/Smarty.class.php');
+
 $show_param = filter_var($_GET['show'], FILTER_SANITIZE_URL);
 $id = filter_var($_GET['id'], FILTER_SANITIZE_URL);
 
@@ -74,9 +77,6 @@ file_put_contents($filename, $string_data);
 
     $project_root = $_SERVER['DOCUMENT_ROOT'];
     $smarty_dir = $project_root. '/smarty/';
-
-    // put full path to Smarty.class.php
-    require( $smarty_dir.'libs/Smarty.class.php');
 
     $smarty = new Smarty();
     $smarty->compile_check = true;
