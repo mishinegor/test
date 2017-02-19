@@ -1,12 +1,13 @@
 ﻿<?php
 // Запмсь в файл
 error_reporting( E_ERROR );
-$filename = 'test.html';
-
-include('functions.php');
+$project_root = $_SERVER['DOCUMENT_ROOT'];
+$smarty_dir = $project_root. '/smarty/';
 
 // put full path to Smarty.class.php
 require( $smarty_dir.'libs/Smarty.class.php');
+
+$filename = 'test.html';
 
 $show_param = filter_var($_GET['show'], FILTER_SANITIZE_URL);
 $id = filter_var($_GET['id'], FILTER_SANITIZE_URL);
@@ -71,12 +72,11 @@ $categories=[
 $string_data = serialize($data);
 file_put_contents($filename, $string_data);
 
+var_dump($data['ads']);
+
 //Массив переменных
 
 // SMARTY
-
-    $project_root = $_SERVER['DOCUMENT_ROOT'];
-    $smarty_dir = $project_root. '/smarty/';
 
     $smarty = new Smarty();
     $smarty->compile_check = true;

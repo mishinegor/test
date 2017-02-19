@@ -1,4 +1,5 @@
 <?php
+
 // Соединение с базой данных
 $db = mysqli_connect(
     'localhost',
@@ -7,3 +8,4 @@ $db = mysqli_connect(
     'ads_base'
 ) or die("Невозвожно подключиться к базе данных, код ошибки:".mysqli_connect_error());
 
+mysqli_set_charset($db, 'utf8');
