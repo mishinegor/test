@@ -8,32 +8,36 @@ function validate_input($data_input) {
 }
 
 function getCities($db) {
-    global $cities;
+    $cities=array();
     $cities_query = mysqli_query($db, 'select * from cities') or die( "Невозвожно выполнить запрос, код ошибки :".mysqli_error($db));// вывод городов из БД
-    $cities_result = mysqli_fetch_all($cities_query, MYSQLI_ASSOC);
-    foreach($cities_result as $key => $val) {
-        $cities[$val['id']] = $val['city_name'];
+    while ($row_cities = mysqli_fetch_assoc($cities_query)) {
+        $row_cities = mysqli_fetch_assoc($cities_query);
+        $cities[$row_cities['id']] = $row_cities['city_name'];
     }
+    return $cities;
 }
 
 function getCategories($db) {
-    global $categories;
+    $categories= array();
     $cat_query = mysqli_query($db, 'select * from categories') or die( "Невозвожно выполнить запрос, код ошибки :".mysqli_error($db)); // вывод категорий из БД
-    $cat_result = mysqli_fetch_all($cat_query, MYSQLI_ASSOC);
-    foreach($cat_result as $key => $val) {
-        $categories[$val['id']] = $val['category'];
+    while ($row_cat = mysqli_fetch_assoc($cat_query)) {
+        $row_cat = mysqli_fetch_assoc($cat_query);
+        $categories[$row_cat['id']] = $row_cat['category'];
     }
+    return $categories;
 }
 
 function getAds($db) {
+    $data=array();
     $extract_sql = "SELECT ads.id, ads.name, email, confirm_rss, phone, city_name, categories.category, name_ad, ad_text, price 
                     FROM ads LEFT JOIN sellers on (sellers.id=ads.name)LEFT JOIN cities on (cities.id=ads.city) LEFT JOIN categories on (categories.id=ads.category)";
-    global $data;
-    $data_query = mysqli_query($db,  $extract_sql); // вывод обявлений из БД
-    $data_result = mysqli_fetch_all($data_query, MYSQLI_ASSOC);
-    foreach ($data_result as $key => $val) {
-        $data['ads'][$val['id']]=$val;
+if ($result = mysqli_query($db, $extract_sql)) {
+    while ($data_result = mysqli_fetch_assoc($result)) {
+        $data['ads'][$data_result['id']] = $data_result;
     }
+}
+    return $data;
+
 }
 
 function insertItem($db, $validate_data) {

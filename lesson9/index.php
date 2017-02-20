@@ -14,8 +14,8 @@ $show_param = filter_var($_GET['show'], FILTER_SANITIZE_URL);
 $id = filter_var($_GET['id'], FILTER_SANITIZE_URL);
 $button_value="Добавить объявление";
 
-    getCities($db);
-    getCategories($db);
+    $cities = getCities($db);
+    $categories = getCategories($db);
 
  $rss_confirm=[
         'checked' =>'Я хочу получать вопросы по объявлению на email',
@@ -65,7 +65,8 @@ if (isset($_GET['del'])) { //Удаление записи
         delItem($db, $id);
 }
 
-getAds($db);
+
+$data = getAds($db);
 
 // SMARTY
 
