@@ -32,7 +32,7 @@
 		<fieldset class="section_ad">
 			<label>Заголовок обявления<input name="name_ad" type="text" value="{$var_array.name_ad}" required></label><br/>
 			<p>Текст объявления</p>
-			<label><textarea name="ad" id="" cols="40" rows="10"  required> {$var_array.ad_text} </textarea></label><br/>
+			<label><textarea name="ad_text" id="" cols="40" rows="10"  required> {$var_array.ad_text} </textarea></label><br/>
 			<label id="price">Цена <input name="price" type="text" size="5" value="{$var_array.price}"> <span>руб</span> </label><br/>
 		</fieldset>
 		<input type="submit" value="{$button_value}" class="buttons" name="add">

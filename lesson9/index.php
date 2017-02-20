@@ -45,6 +45,7 @@ if(isset($_POST['add'])) { // Добавление записи
         'id' => validate_input($_POST['id']),
     ];
 
+
     if(isset($_GET['show'])){
         $edition_ad = array_replace($data['ads'][$validate_data['id']], $validate_data);
         $data['ads'][$validate_data['id']] = $edition_ad;
@@ -67,6 +68,8 @@ if (isset($_GET['del'])) { //Удаление записи
 
 
 $data = getAds($db);
+var_dump($_POST);
+var_dump($data);
 
 // SMARTY
 
