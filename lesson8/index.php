@@ -6,6 +6,7 @@ $smarty_dir = $project_root. '/smarty/';
 
 // put full path to Smarty.class.php
 require( $smarty_dir.'libs/Smarty.class.php');
+include('functions.php');
 
 $filename = 'test.html';
 
@@ -27,13 +28,27 @@ if(isset($_POST['add'])) { // Добавление записи
         unset($_GET['del']);
     }
 
-    if(isset($_GET['show']) && isset($data['ads'][$_POST['id']])){
-        $edition_ad = array_replace($data['ads'][$_POST['id']], $_POST);
-        $data['ads'][$_POST['id']] = $edition_ad;
+    $validate_data = [
+        'type' => validate_input($_POST['type']),
+        'name' => validate_input($_POST['name']),
+        'email' => validate_input($_POST['email']),
+        'confirm_rss' => validate_input($_POST['confirm'][0]),
+        'phone' => validate_input($_POST['phone']),
+        'city' => validate_input($_POST['city']),
+        'cat' => validate_input($_POST['cat']),
+        'name_ad' => validate_input($_POST['name_ad']),
+        'ad_text' => validate_input($_POST['ad_text']),
+        'price' => validate_input($_POST['price']),
+        'id' => validate_input($_POST['id']),
+    ];
+
+    if(isset($_GET['show']) && isset($data['ads'][$validate_data['id']])){
+        $edition_ad = array_replace($data['ads'][$validate_data['id']], $validate_data);
+        $data['ads'][$validate_data['id']] = $edition_ad;
         header('location: index.php');
 
     } else {
-        $data['ads'][]=$_POST;
+        $data['ads'][]=$validate_data;
     }
 }
 if (isset($_GET['show'])){
@@ -69,10 +84,19 @@ $categories=[
     '543660'=>'Коампьютерная техника'
 ];
 
+$smarty_data=[
+    'button_value' => $button_value,
+    'show_param' => $show_param,
+    'cat'=> $categories,
+    'cities' => $cities,
+    'rss_confirm'=> $rss_confirm,
+    'business_type' => $business_type
+
+];
+
 $string_data = serialize($data);
 file_put_contents($filename, $string_data);
 
-var_dump($data['ads']);
 
 //Массив переменных
 
@@ -89,12 +113,7 @@ var_dump($data['ads']);
 
 
     $smarty->assign('ads', $data['ads']);
-    $smarty->assign('button_value', $button_value);
-    $smarty->assign('show_param', $show_param);
-    $smarty->assign('cat', $categories);
-    $smarty->assign('cities', $cities);
-    $smarty->assign('rss_confirm', $rss_confirm);
-    $smarty->assign('business_type', $business_type);
+    $smarty->assign('smarty_data', $smarty_data);
     $smarty->assign('var_array', $data['ads'][$show_param]);
 
 

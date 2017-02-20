@@ -18,7 +18,7 @@ $button_value="Добавить объявление";
     $categories = getCategories($db);
 
  $rss_confirm=[
-        'checked' =>'Я хочу получать вопросы по объявлению на email',
+        'checked' =>'Я хочу получать вопросы по объявлению на email'
     ];
 
 $business_type=[
@@ -35,7 +35,7 @@ if(isset($_POST['add'])) { // Добавление записи
         'type' => validate_input($_POST['type']),
         'name' => validate_input($_POST['name']),
         'email' => validate_input($_POST['email']),
-        'confirm_rss' => validate_input($_POST[$confirm[0]]),
+        'confirm_rss' => validate_input($_POST['confirm'][0]),
         'phone' => validate_input($_POST['phone']),
         'city' => validate_input($_POST['city']),
         'cat' => validate_input($_POST['cat']),
@@ -44,6 +44,7 @@ if(isset($_POST['add'])) { // Добавление записи
         'price' => validate_input($_POST['price']),
         'id' => validate_input($_POST['id']),
     ];
+
 
 
     if(isset($_GET['show'])){
@@ -66,10 +67,7 @@ if (isset($_GET['del'])) { //Удаление записи
         delItem($db, $id);
 }
 
-
 $data = getAds($db);
-var_dump($_POST);
-var_dump($data);
 
 // SMARTY
 
