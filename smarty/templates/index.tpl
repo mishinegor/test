@@ -38,6 +38,7 @@
 		<input type="submit" value="{$smarty_data.button_value}" class="buttons" name="add">
 		<input type="hidden"  name="id" value="{$smarty_data.show_param}">
 		<p id="notice">*Все поля обязательны для заполнения</p>
+		<p id="warning" style="color: red">{$smarty_data.alert}</p>
 	</form>
         {include file ='show_table.tpl'}
 </div> <!--End container -->

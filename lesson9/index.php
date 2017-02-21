@@ -25,6 +25,10 @@ $business_type=[
     'private' =>'Частное лицо',
     'corp' =>'Компания'
 ];
+$warnings = [
+  0 => 'Не удалось добавить объявление',
+  1 => 'Не удалось редактировать объявление',
+];
 
 $data = getAds($db);
 
@@ -49,16 +53,22 @@ if(isset($_POST['add'])) { // Добавление записи
 
 
 
-    if(isset($_GET['show']) && isset($data['ads'][$validate_data['id']])){
+    if(isset($_GET['show'])){
         $edition_ad = array_replace($data['ads'][$validate_data['id']], $validate_data);
         $data['ads'][$validate_data['id']] = $edition_ad;
-            updateItem($db, $validate_data, $id);
+            if(isset($data['ads'][$validate_data['id']])){
+                updateItem($db, $validate_data, $id);
+            } else {
+                $alert = $warnings[1];
+            }
 
         header('location: index.php');
 
     } else {
         if(!empty($validate_data)) {
             insertItem($db, $validate_data);
+        } else {
+             $alert = $warnings[0];
         }
     }
 }
@@ -73,17 +83,14 @@ if (isset($_GET['del']) && isset($data['ads'][$id])) { //Удаление зап
 
 $data = getAds($db);
 
-
-
-
-
 $smarty_data=[
     'button_value' => $button_value,
     'show_param' => $show_param,
     'cat'=> $categories,
     'cities' => $cities,
     'rss_confirm'=> $rss_confirm,
-    'business_type' => $business_type
+    'business_type' => $business_type,
+    'alert' => $alert
 
 ];
 // SMARTY
