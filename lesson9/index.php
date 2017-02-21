@@ -93,6 +93,9 @@ $smarty_data=[
     'alert' => $alert
 
 ];
+
+var_dump($_POST);
+var_dump($data);
 // SMARTY
 
     $smarty = new Smarty();

@@ -34,8 +34,8 @@ if(isset($_POST['add'])) { // Добавление записи
         'email' => validate_input($_POST['email']),
         'confirm_rss' => validate_input($_POST['confirm'][0]),
         'phone' => validate_input($_POST['phone']),
-        'city' => validate_input($_POST['city']),
-        'cat' => validate_input($_POST['cat']),
+        'city_id' => validate_input($_POST['city']),
+        'cat_id' => validate_input($_POST['cat']),
         'name_ad' => validate_input($_POST['name_ad']),
         'ad_text' => validate_input($_POST['ad_text']),
         'price' => validate_input($_POST['price']),
@@ -96,9 +96,6 @@ $smarty_data=[
 
 $string_data = serialize($data);
 file_put_contents($filename, $string_data);
-
-
-//Массив переменных
 
 // SMARTY
 

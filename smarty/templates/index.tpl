@@ -22,10 +22,10 @@
 		<fieldset class="contacts_location">
 			<label>Ваш телефон <input name="phone" type="text" value="{$var_array.phone}" required></label><br/>
 			<label>Ваш город
-                    {html_options name=city options=$smarty_data.cities selected=$var_array.city}
+                    {html_options name=city options=$smarty_data.cities selected=$var_array.city_id}
 			</label><br/>
 			<label>Категория товара
-					{html_options name=cat options=$smarty_data.cat selected=$var_array.cat}
+					{html_options name=cat options=$smarty_data.cat selected=$var_array.cat_id}
 			</label>
 		</fieldset>
 

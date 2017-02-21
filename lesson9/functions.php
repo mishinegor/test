@@ -31,7 +31,7 @@ function getCategories($db) {
 
 function getAds($db) {
     $data=array();
-    $extract_sql = "SELECT ads.id, ads.type, ads.name, email, confirm_rss, phone, city_name, categories.category, name_ad, ad_text, price 
+    $extract_sql = "SELECT ads.id, ads.type, ads.name, email, confirm_rss, phone,cities.id as city_id, categories.id as category_id, name_ad, ad_text, price 
                     FROM ads LEFT JOIN sellers on (sellers.id=ads.name)LEFT JOIN cities on (cities.id=ads.city) LEFT JOIN categories on (categories.id=ads.category)";
 if ($result = mysqli_query($db, $extract_sql)) {
     while ($data_result = mysqli_fetch_assoc($result)) {
@@ -54,7 +54,7 @@ function delItem ($db, $id){
 }
 
 function updateItem($db, $validate_data, $id) {
-    $update_query = mysqli_prepare($db, "UPDATE  ads SET ID = ?, TYPE = ?,  NAME = ?, EMAIL = ?, CONFIRM_RSS = ?, PHONE = ?, CITY = ?, CATEGORY = ?, NAME_AD = ?, AD_TEXT = ?, PRICE = ? WHERE id=?") or die( "Невозвожно выполнить запрос, код ошибки :".mysqli_error($db)); // вывод категорий из БД;
+    $update_query = mysqli_prepare($db, "UPDATE  ads SET ID = ?, TYPE = ?,  NAME = ?, EMAIL = ?, CONFIRM_RSS = ?, PHONE = ?, CITY= ?, CATEGORY = ?, NAME_AD = ?, AD_TEXT = ?, PRICE = ? WHERE id=?") or die( "Невозвожно выполнить запрос, код ошибки :".mysqli_error($db)); // вывод категорий из БД;
     mysqli_stmt_bind_param($update_query, 'isssssiissii', $id ,$validate_data['type'], $validate_data['name'], $validate_data['email'],  $validate_data['confirm_rss'], $validate_data['phone'], $validate_data['city'], $validate_data['cat'], $validate_data['name_ad'], $validate_data['ad_text'], $validate_data['price'], $validate_data['id']);
     mysqli_stmt_execute($update_query);
 }
