@@ -10,9 +10,10 @@ function validate_input($data_input) {
 function getCities($db) {
     $cities=array();
     $cities_query = mysqli_query($db, 'select * from cities') or die( "Невозвожно выполнить запрос, код ошибки :".mysqli_error($db));// вывод городов из БД
-    while ($row_cities = mysqli_fetch_assoc($cities_query)) {
-        $row_cities = mysqli_fetch_assoc($cities_query);
-        $cities[$row_cities['id']] = $row_cities['city_name'];
+    if($cities_query) {
+        while ($row_cities = mysqli_fetch_assoc($cities_query)) {
+            $cities[$row_cities['id']] = $row_cities['city_name'];
+        }
     }
     return $cities;
 }
@@ -20,9 +21,10 @@ function getCities($db) {
 function getCategories($db) {
     $categories= array();
     $cat_query = mysqli_query($db, 'select * from categories') or die( "Невозвожно выполнить запрос, код ошибки :".mysqli_error($db)); // вывод категорий из БД
-    while ($row_cat = mysqli_fetch_assoc($cat_query)) {
-        $row_cat = mysqli_fetch_assoc($cat_query);
-        $categories[$row_cat['id']] = $row_cat['category'];
+    if($cat_query) {
+        while ($row_cat = mysqli_fetch_assoc($cat_query)) {
+            $categories[$row_cat['id']] = $row_cat['category'];
+        }
     }
     return $categories;
 }
