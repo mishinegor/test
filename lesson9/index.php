@@ -26,6 +26,8 @@ $business_type=[
     'corp' =>'Компания'
 ];
 
+$data = getAds($db);
+
 if(isset($_POST['add'])) { // Добавление записи
     if(isset($_GET['del'])){
         unset($_GET['del']);
@@ -47,14 +49,15 @@ if(isset($_POST['add'])) { // Добавление записи
 
 
 
-    if(isset($_GET['show'])){
+    if(isset($_GET['show']) && isset($data['ads'][$validate_data['id']])){
         $edition_ad = array_replace($data['ads'][$validate_data['id']], $validate_data);
         $data['ads'][$validate_data['id']] = $edition_ad;
             updateItem($db, $validate_data, $id);
+
         header('location: index.php');
 
     } else {
-        if(isset($validate_data)) {
+        if(!empty($validate_data)) {
             insertItem($db, $validate_data);
         }
     }
@@ -63,12 +66,26 @@ if (isset($_GET['show'])){
     $button_value="Сохранить объявление";
 }
 
-if (isset($_GET['del'])) { //Удаление записи
+
+if (isset($_GET['del']) && isset($data['ads'][$id])) { //Удаление записи
         delItem($db, $id);
 }
 
 $data = getAds($db);
 
+
+
+
+
+$smarty_data=[
+    'button_value' => $button_value,
+    'show_param' => $show_param,
+    'cat'=> $categories,
+    'cities' => $cities,
+    'rss_confirm'=> $rss_confirm,
+    'business_type' => $business_type
+
+];
 // SMARTY
 
     $smarty = new Smarty();
@@ -82,12 +99,7 @@ $data = getAds($db);
 
 
     $smarty->assign('ads', $data['ads']);
-    $smarty->assign('button_value', $button_value);
-    $smarty->assign('show_param', $show_param);
-    $smarty->assign('cat', $categories);
-    $smarty->assign('cities', $cities);
-    $smarty->assign('rss_confirm', $rss_confirm);
-    $smarty->assign('business_type', $business_type);
+    $smarty->assign('smarty_data', $smarty_data);
     $smarty->assign('var_array', $data['ads'][$show_param]);
 
     $smarty->display('index.tpl');
