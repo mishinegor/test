@@ -25,7 +25,7 @@
                     {html_options name=city options=$smarty_data.cities selected=$var_array.city_id}
 			</label><br/>
 			<label>Категория товара
-					{html_options name=cat options=$smarty_data.cat selected=$var_array.cat_id}
+					{html_options name=cat options=$smarty_data.cat selected=$var_array.category_id}
 			</label>
 		</fieldset>
 
