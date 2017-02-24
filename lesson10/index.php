@@ -12,6 +12,7 @@ include('functions.php');
 
 $show_param = filter_var($_GET['show'], FILTER_SANITIZE_URL);
 $id = filter_var($_GET['id'], FILTER_SANITIZE_URL);
+
 $button_value="Добавить объявление";
 
 $cities = getCities($db);
@@ -26,8 +27,11 @@ $business_type=[
     'corp' =>'Компания'
 ];
 $warnings = [
-    0 => 'Не удалось добавить объявление',
-    1 => 'Не удалось редактировать объявление',
+    1 => 'Не удалось добавить объявление',
+    2 => 'Не удалось редактировать объявление',
+    3 => 'Неправильно заполнено поле email',
+    4 => 'Неправильно заполнено поле телефон',
+    5 => 'Неправильно заполнено поле цена',
 ];
 
 $data = getAds($db);
@@ -50,37 +54,42 @@ if(isset($_POST['add'])) { // Добавление записи
         'price' => validate_input($_POST['price']),
         'id' => validate_input($_POST['id']),
     ];
-
-
+        $validate_email = filter_var($validate_data['email'], FILTER_VALIDATE_EMAIL);
+        $validate_phone = filter_var($validate_data['phone'], FILTER_VALIDATE_INT);
+        $validate_price = filter_var($validate_data['price'], FILTER_VALIDATE_INT);
 
     if(isset($_GET['show'])){
         $edition_ad = array_replace($data['ads'][$validate_data['id']], $validate_data);
         $data['ads'][$validate_data['id']] = $edition_ad;
-        if(isset($data['ads'][$validate_data['id']])){
+        if(isset($data['ads'][$validate_data['id']]) && $validate_email && $validate_phone && $validate_price){
             updateItem($db, $validate_data, $id);
+            header('location: index.php');
         } else {
-            $alert = $warnings[1];
+            check_data($validate_data['email'], $validate_email, $warnings[3]);
+            check_data($validate_data['phone'], $validate_phone, $warnings[4]);
+            check_data($validate_data['price'], $validate_price, $warnings[5]);
         }
 
-        header('location: index.php');
 
     } else {
-        if(!empty($validate_data)) {
-            insertItem($db, $validate_data);
-        } else {
-            $alert = $warnings[0];
+        if(!empty($validate_data) && $validate_email && $validate_phone && $validate_price) {
+                insertItem($db, $validate_data);
+            } else {
+                 check_data($validate_data['email'], $validate_email, $warnings[3]);
+                 check_data($validate_data['phone'], $validate_phone, $warnings[4]);
+                 check_data($validate_data['price'], $validate_price, $warnings[5]);
+            }
         }
     }
-}
 if (isset($_GET['show'])){
     $button_value="Сохранить объявление";
 }
 
 
+
 if (isset($_GET['del']) && isset($data['ads'][$id])) { //Удаление записи
     delItem($db, $id);
 }
-
 $data = getAds($db);
 
 $smarty_data=[

@@ -12,10 +12,11 @@
 <div class="container">
 	<h1>Подайте объявление:</h1>
 	<form  method="post" id="add">
+		<p id="warning">{$smarty_data.alert}</p>
         {html_radios name="type" options=$smarty_data.business_type selected=$var_array.type}
 		<fieldset class="contacts_email">
 			<label>Ваше имя <input name="name" type="text" value="{$var_array.name}" required></label><br/>
-			<label>Ваш email <input name="email" type="email"  value="{$var_array.email}" required></label><br/>
+			<label>Ваш email <input name="email" type="text"  value="{$var_array.email}" required></label><br/>
 			{html_checkboxes name="confirm" options=$smarty_data.rss_confirm selected=$var_array.confirm_rss}
 		</fieldset>
 
@@ -38,7 +39,6 @@
 		<input type="submit" value="{$smarty_data.button_value}" class="buttons" name="add">
 		<input type="hidden"  name="id" value="{$smarty_data.show_param}">
 		<p id="notice">*Все поля обязательны для заполнения</p>
-		<p id="warning" style="color: red">{$smarty_data.alert}</p>
 	</form>
         {include file ='show_table.tpl'}
 </div> <!--End container -->
