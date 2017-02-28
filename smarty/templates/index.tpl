@@ -12,29 +12,31 @@
 <div class="container">
 	<h1>Подайте объявление:</h1>
 	<form  method="post" id="add">
-		<p id="warning">{$smarty_data.alert}</p>
-        {html_radios name="type" options=$smarty_data.business_type selected=$var_array.type}
+		{foreach from=$smarty_data.alert item=item}
+			<p id="warning">{$item}</p>
+        {/foreach}
+        {html_radios name="type" options=$smarty_data.business_type selected=$ad.type}
 		<fieldset class="contacts_email">
-			<label>Ваше имя <input name="name" type="text" value="{$var_array.name}" required></label><br/>
-			<label>Ваш email <input name="email" type="text"  value="{$var_array.email}" required></label><br/>
-			{html_checkboxes name="confirm" options=$smarty_data.rss_confirm selected=$var_array.confirm_rss}
+			<label>Ваше имя <input name="name" type="text" value="{$ad.name}" required></label><br/>
+			<label>Ваш email <input name="email" type="text"  value="{$ad.email}" required></label><br/>
+			{html_checkboxes name="confirm" options=$smarty_data.rss_confirm selected=$ad.confirm_rss}
 		</fieldset>
 
 		<fieldset class="contacts_location">
-			<label>Ваш телефон <input name="phone" type="text" value="{$var_array.phone}" required></label><br/>
+			<label>Ваш телефон <input name="phone" type="text" value="{$ad.phone}" required></label><br/>
 			<label>Ваш город
-                    {html_options name=city options=$smarty_data.cities selected=$var_array.city_id}
+                    {html_options name=city options=$smarty_data.cities selected=$ad.city}
 			</label><br/>
 			<label>Категория товара
-					{html_options name=cat options=$smarty_data.cat selected=$var_array.category_id}
+					{html_options name=cat options=$smarty_data.cat selected=$ad.category}
 			</label>
 		</fieldset>
 
 		<fieldset class="section_ad">
-			<label>Заголовок обявления<input name="name_ad" type="text" value="{$var_array.name_ad}" required></label><br/>
+			<label>Заголовок обявления<input name="name_ad" type="text" value="{$ad.name_ad}" required></label><br/>
 			<p>Текст объявления</p>
-			<label><textarea name="ad_text" id="" cols="40" rows="10" required>{$var_array.ad_text}</textarea></label><br/>
-			<label id="price">Цена <input name="price" type="text" size="5" value="{$var_array.price}"> <span>руб</span> </label><br/>
+			<label><textarea name="ad_text" id="" cols="40" rows="10" required>{$ad.ad_text}</textarea></label><br/>
+			<label id="price">Цена <input name="price" type="text" size="5" value="{$ad.price}"> <span>руб</span> </label><br/>
 		</fieldset>
 		<input type="submit" value="{$smarty_data.button_value}" class="buttons" name="add">
 		<input type="hidden"  name="id" value="{$smarty_data.show_param}">

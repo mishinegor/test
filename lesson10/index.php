@@ -13,84 +13,57 @@ include('functions.php');
 $show_param = filter_var($_GET['show'], FILTER_SANITIZE_URL);
 $id = filter_var($_GET['id'], FILTER_SANITIZE_URL);
 
-$button_value="Добавить объявление";
+
 
 $cities = getCities($db);
 $categories = getCategories($db);
-
-$rss_confirm=[
-    'checked' =>'Я хочу получать вопросы по объявлению на email'
-];
-
-$business_type=[
-    'private' =>'Частное лицо',
-    'corp' =>'Компания'
-];
-$warnings = [
-    1 => 'Не удалось добавить объявление',
-    2 => 'Не удалось редактировать объявление',
-    3 => 'Неправильно заполнено поле email',
-    4 => 'Неправильно заполнено поле телефон',
-    5 => 'Неправильно заполнено поле цена',
-];
-
+$rss_confirm = getCheckbox($db);
+$business_type=getbusiness_type($db);
 $data = getAds($db);
+$ad = $data['ads'][$show_param];
+
+
 
 if(isset($_POST['add'])) { // Добавление записи
-    if(isset($_GET['del'])){
+    if (isset($_GET['del'])) {
         unset($_GET['del']);
     }
+    $validate_data = validate_input($_POST);
+    $warnings = validation_form($validate_data);
 
-    $validate_data = [
-        'type' => validate_input($_POST['type']),
-        'name' => validate_input($_POST['name']),
-        'email' => validate_input($_POST['email']),
-        'confirm_rss' => validate_input($_POST['confirm'][0]),
-        'phone' => validate_input($_POST['phone']),
-        'city_id' => validate_input($_POST['city']),
-        'category_id' => validate_input($_POST['cat']),
-        'name_ad' => validate_input($_POST['name_ad']),
-        'ad_text' => validate_input($_POST['ad_text']),
-        'price' => validate_input($_POST['price']),
-        'id' => validate_input($_POST['id']),
-    ];
-        $validate_email = filter_var($validate_data['email'], FILTER_VALIDATE_EMAIL);
-        $validate_phone = filter_var($validate_data['phone'], FILTER_VALIDATE_INT);
-        $validate_price = filter_var($validate_data['price'], FILTER_VALIDATE_INT);
+    if ($warnings['status'] === true) {
+        if (isset($_GET['show'])) {
+            $edition_ad = array_replace($data['ads'][$validate_data['id']], $validate_data);
+            $data['ads'][$validate_data['id']] = $edition_ad;
+            if (isset($data['ads'][$validate_data['id']])) {
+                updateItem($db, $validate_data, $id);
+                header('location: index.php');
+            }
 
-    if(isset($_GET['show'])){
-        $edition_ad = array_replace($data['ads'][$validate_data['id']], $validate_data);
-        $data['ads'][$validate_data['id']] = $edition_ad;
-        if(isset($data['ads'][$validate_data['id']]) && $validate_email && $validate_phone && $validate_price){
-            updateItem($db, $validate_data, $id);
-            header('location: index.php');
         } else {
-            check_data($validate_data['email'], $validate_email, $warnings[3]);
-            check_data($validate_data['phone'], $validate_phone, $warnings[4]);
-            check_data($validate_data['price'], $validate_price, $warnings[5]);
-        }
-
-
-    } else {
-        if(!empty($validate_data) && $validate_email && $validate_phone && $validate_price) {
+            if (!empty($validate_data)) {
                 insertItem($db, $validate_data);
-            } else {
-                 check_data($validate_data['email'], $validate_email, $warnings[3]);
-                 check_data($validate_data['phone'], $validate_phone, $warnings[4]);
-                 check_data($validate_data['price'], $validate_price, $warnings[5]);
             }
         }
+    } else {
+        $ad = $_POST;
     }
-if (isset($_GET['show'])){
-    $button_value="Сохранить объявление";
 }
+        if (isset($_GET['show'])) {
+            $button_value = "Сохранить объявление";
+        } else {
+            $button_value = "Добавить объявление";
+        }
 
+    if (isset($_GET['del']) && isset($data['ads'][$id])) { //Удаление записи
+        delItem($db, $id);
+    }
 
-
-if (isset($_GET['del']) && isset($data['ads'][$id])) { //Удаление записи
-    delItem($db, $id);
-}
 $data = getAds($db);
+
+$alert = $warnings['message']
+
+;
 
 $smarty_data=[
     'button_value' => $button_value,
@@ -117,7 +90,7 @@ $smarty->config_dir = $smarty_dir.'configs';
 
 $smarty->assign('ads', $data['ads']);
 $smarty->assign('smarty_data', $smarty_data);
-$smarty->assign('var_array', $data['ads'][$show_param]);
+$smarty->assign('ad', $ad);
 
 $smarty->display('index.tpl');
 ?>

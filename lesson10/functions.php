@@ -1,17 +1,38 @@
 <?php
 
 function validate_input($data_input) {
-    $data_input = trim($data_input);
-    $data_input = stripslashes($data_input);
-    $data_input = htmlspecialchars($data_input);
-    return $data_input;
+    $validate_data=array();
+    foreach ($data_input as $key => $val) {
+        $validate_data[$key] = trim($val);
+        $validate_data[$key] = stripslashes($val);
+        $validate_data[$key] = htmlspecialchars($val);
+    }
+    return $validate_data;
 }
 
-function check_data($field, $validate_email, $msg){
-    global $alert;
-    if (!$validate_email && isset($field)) {
-        $alert = $msg;
+function validation_form($data_form){
+    $validate_email = filter_var($data_form['email'], FILTER_VALIDATE_EMAIL);
+    $validate_phone = filter_var($data_form['phone'], FILTER_VALIDATE_INT);
+    $validate_price = filter_var($data_form['price'], FILTER_VALIDATE_INT);
+
+    $result=array();
+    $result['status'] = true;
+
+    if (!isset($data_form['email']) || empty($data_form['email']) || !$validate_email){
+        $result['status'] = false;
+        $result['message'][] = 'Неправильно введён  email';
     }
+
+    if (!isset($data_form['phone']) || empty($data_form['phone']) || !$validate_phone){
+        $result['status'] = false;
+        $result['message'][] = 'Неправильно введён номер телефона';
+    }
+
+    if (!isset($data_form['price']) || empty($data_form['price']) || !$validate_price){
+        $result['status'] = false;
+        $result['message'][] = 'Неправильно введёно поле цена';
+    }
+    return $result;
 }
 
 function myLogger($db, $sql, $caller)
@@ -31,6 +52,33 @@ function getCities($db) {
         $cities[$val['id']] = $val['city_name'];
     }
     return $cities;
+}
+
+function getWarnings($db) {
+    $warnings = array();
+    $warnings_result = $db->select('SELECT *  FROM warnings') or die("Невозвожно выполнить запрос, код ошибки :" . mysqli_error($db));// вывод городов из БД;
+    foreach ($warnings_result as $key => $val) {
+        $warnings[$val['id']] = $val['warning'];
+    }
+    return $warnings;
+}
+
+function getbusiness_type($db) {
+    $business_type = array();
+    $type_result = $db->select('SELECT *  FROM  business_type') or die("Невозвожно выполнить запрос, код ошибки :" . mysqli_error($db));// вывод городов из БД;
+    foreach ($type_result as $key => $val) {
+        $business_type[$val['type']] = $val['type_value'];
+    }
+    return $business_type;
+}
+
+function getCheckbox($db) {
+    $confirm_rss = array();
+    $checkbox_result = $db->select('SELECT *  FROM  checkbox') or die("Невозвожно выполнить запрос, код ошибки :" . mysqli_error($db));// вывод городов из БД;
+    foreach ($checkbox_result as $key => $val) {
+        $confirm_rss[$val['type']] = $val['value'];
+    }
+    return $confirm_rss;
 }
 
 function getCategories($db) {
@@ -54,7 +102,7 @@ function getAds($db) {
 
 function insertItem($db, $validate_data) {
     $add_query = $db->query("INSERT INTO ads (TYPE, NAME, EMAIL, CONFIRM_RSS, PHONE, CITY, CATEGORY, NAME_AD, AD_TEXT, PRICE) VALUES ( ?, ?, ?, ?, ?,  ?d, ?d, ?, ?, ?d)",
-    $validate_data['type'], $validate_data['name'], $validate_data['email'], $validate_data['confirm_rss'], $validate_data['phone'], $validate_data['city_id'], $validate_data['category_id'], $validate_data['name_ad'], $validate_data['ad_text'], $validate_data['price']);
+    $validate_data['type'], $validate_data['name'], $validate_data['email'], $validate_data['confirm_rss'], $validate_data['phone'], $validate_data['city'], $validate_data['cat'], $validate_data['name_ad'], $validate_data['ad_text'], $validate_data['price']);
     }
 function delItem ($db, $id){
     $del_query = $db->query("DELETE FROM ads WHERE id = ?d", $id) or die( "Невозвожно выполнить запрос, код ошибки :".mysqli_error($db)); // вывод категорий из БД;
