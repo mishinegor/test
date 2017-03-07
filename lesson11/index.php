@@ -14,12 +14,7 @@ include('show_ads.php');
 
 include('functions.php');
 
-
-
-
-
 $show_data = new ShowAds();
-$show_data->ad = $data['ads'][$show_data->getShowparam()];
 
 if(isset($_POST['add'])) { // Добавление записи
     if (isset($_GET['del'])) {
@@ -39,13 +34,18 @@ if(isset($_POST['add'])) { // Добавление записи
             }
         }
     }
-}   else {
+    else {
         $show_data->ad = $_POST;
     }
-
+}
 
 if (isset($_GET['del'])) { //Удаление записи
     $show_data->delItem($db);
+}
+$show_data->getAds($db);
+
+if($show_data->getShowparam()){
+    $show_data->ad = $show_data->data['ads'][$show_data->getShowparam()];
 }
 
 $smarty_data=[
@@ -56,7 +56,6 @@ $smarty_data=[
     'rss_confirm'=> $show_data->getCheckbox($db),
     'business_type' => $show_data->getBusinessType($db),
     'alert' =>  $new_ad->warnings['message']
-
 ];
 
 // SMARTY
@@ -71,7 +70,7 @@ $smarty->cache_dir = $smarty_dir.'cache';
 $smarty->config_dir = $smarty_dir.'configs';
 
 
-$smarty->assign('ads', $show_data->getAds($db));
+$smarty->assign('ads', $show_data->data['ads']);
 $smarty->assign('smarty_data', $smarty_data);
 $smarty->assign('ad', $show_data->ad);
 
