@@ -48,9 +48,6 @@ if (isset($_GET['del'])) { //Удаление записи
     $show_data->delItem($db);
 }
 
-$data = $show_data->getAds($db);
-
-
 $smarty_data=[
     'button_value' => $show_data->getButtonValue(),
     'show_param' => $show_data->show_param,
@@ -74,7 +71,7 @@ $smarty->cache_dir = $smarty_dir.'cache';
 $smarty->config_dir = $smarty_dir.'configs';
 
 
-$smarty->assign('ads', $data['ads']);
+$smarty->assign('ads', $show_data->getAds($db));
 $smarty->assign('smarty_data', $smarty_data);
 $smarty->assign('ad', $show_data->ad);
 

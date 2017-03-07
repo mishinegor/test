@@ -56,7 +56,7 @@ class ShowAds
         $this->data=array();
         $this->data['ads'] = $db->select("SELECT ads.id AS ARRAY_KEY, ads.type, ads.name, email, confirm_rss, phone,cities.id as city_id, categories.id as category_id, name_ad, ad_text, price 
                     FROM ads LEFT JOIN sellers on (sellers.id=ads.name)LEFT JOIN cities on (cities.id=ads.city) LEFT JOIN categories on (categories.id=ads.category)");
-        return $this->data;
+        return $this->data['ads'];
     }
     public function getButtonValue(){
         if (isset($_GET['show'])) {
