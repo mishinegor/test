@@ -18,7 +18,7 @@ $id = filter_var($_GET['id'], FILTER_SANITIZE_URL);
 $cities = getCities($db);
 $categories = getCategories($db);
 $rss_confirm = getCheckbox($db);
-$business_type=getbusiness_type($db);
+$business_type=getBusinessType($db);
 $data = getAds($db);
 $ad = $data['ads'][$show_param];
 

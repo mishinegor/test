@@ -110,7 +110,7 @@ function delItem ($db, $id){
 
 function updateItem($db, $validate_data, $id) {
     $update_query = $db->query("UPDATE  ads SET ID = ?d, TYPE=?, NAME = ?, EMAIL = ?, CONFIRM_RSS = ?, PHONE = ?, CITY = ?d, CATEGORY = ?d, NAME_AD = ?, AD_TEXT = ?, PRICE = ? WHERE id=?d",
-    $id ,$validate_data['type'], $validate_data['name'], $validate_data['email'],  $validate_data['confirm_rss'], $validate_data['phone'], $validate_data['city_id'], $validate_data['category_id'], $validate_data['name_ad'], $validate_data['ad_text'], $validate_data['price'], $validate_data['id']);
+    $id ,$validate_data['type'], $validate_data['name'], $validate_data['email'],  $validate_data['confirm_rss'], $validate_data['phone'], $validate_data['city'], $validate_data['category'], $validate_data['name_ad'], $validate_data['ad_text'], $validate_data['price'], $validate_data['id']);
 }
 
  ?>

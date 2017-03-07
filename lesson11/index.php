@@ -8,8 +8,10 @@ $smarty_dir = $project_root. '/smarty/';
 // put full path to Smarty.class.php
 require( $smarty_dir.'libs/Smarty.class.php');
 include('mysql_conection.php');
+
 include('ad.php');
 include('show_ads.php');
+
 include('functions.php');
 
 
@@ -17,6 +19,7 @@ include('functions.php');
 
 
 $show_data = new ShowAds();
+$show_data->ad = $data['ads'][$show_data->getShowparam()];
 
 if(isset($_POST['add'])) { // Добавление записи
     if (isset($_GET['del'])) {
@@ -46,7 +49,6 @@ if (isset($_GET['del'])) { //Удаление записи
 }
 
 $data = $show_data->getAds($db);
-$show_data->ad = $data['ads'][$show_data->getShowparam()];
 
 
 $smarty_data=[
