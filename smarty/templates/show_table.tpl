@@ -1,20 +1,19 @@
 {if !empty($ads)}
         <div id="ad_container">
-            <table>
-                <tr class="caption">
-                    <td>Название</td>
-                    <td>Цена</td>
-                    <td>Имя владельца</td>
-                    <td>Удалить</td>
-
-                    </tr>
+            <table class="table table-hover">
+                <tr>
+                    <th>Название</th>
+                    <th>Цена</th>
+                    <th>Имя владельца</th>
+                    <th>Удалить</th>
+                </tr>
 
                 {foreach from = $ads key = key item = val}
                     <tr>
                         <td><a href="?show={$key}">{$val.name_ad}</a></td>
                         <td>{$val.price}</td>
                         <td>{$val.name}</td>
-                        <td><a href="?id={$key}&del=1">Удалить</a></td>
+                        <td><a href="?id={$key}&del=1" class="btn btn-danger">удалить</a></td>
                     </tr>
                 {/foreach}
             </table>
