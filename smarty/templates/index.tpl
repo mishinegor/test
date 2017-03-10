@@ -12,7 +12,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
 
-	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="/style.css">
 	<title>Задание 6 Форма отправки объявления</title>
 </head>
 <body>
@@ -46,7 +46,6 @@
 			<label id="price">Цена <input name="price" type="text" size="5" class="form-control" value="{$ad.price}"> <span>руб</span> </label><br/>
 		</fieldset>
 		<input type="submit" value="{$smarty_data.button_value}" class="btn btn-primary" name="add">
-		<input type="hidden"  name="id" value="{$smarty_data.show_param}">
 		<p class="help-block">*Все поля обязательны для заполнения</p>
 	</form>
         {include file ='show_table.tpl'}
