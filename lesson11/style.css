@@ -1,8 +1,8 @@
 ﻿body {
-    font-size: 14px;
+    font-size: 13px;
     font-family: 'Verdana';
     color:#666;
-    background-color: aliceblue;
+    background-color: #83b8dd;
 }
 a {
     font-size: .9em;
@@ -15,6 +15,8 @@ a:hover {
 }
 h1{
     font-size: 1.8em;
+    margin: 2% 0;
+    color: #ffffff;
 }
 
 div.container {
@@ -26,7 +28,7 @@ div.container {
 /* Стиль формы */
 
 form, div#ad_container {
-    width: 40%;
+    width: 45%;
 
     float: left;
 
@@ -41,35 +43,18 @@ form, div#ad_container {
 
 fieldset {
     border:none;
+    margin: 5% 0;
+}
+select.form-control {
+    font-size: .9em;
 }
 
-input[type='text'], input[type='email'], select, textarea {
-    background-color: white;
-    border: 1px solid #666666;
-    -webkit-border-radius:10px;
-    -moz-border-radius:10px;
-    border-radius:10px;
-
-    padding: 2%;
-    font-size: 1.1em;
+input[type=checkbox], input[type=radio] {
+    margin: 0 2%;
 }
 
-input[type='text']:focus, input[type='email']:focus, select:focus, textarea:focus {
-    outline: none;
-}
-
-input[type='text'], input[type='email'], select {
-    width: 40%;
-    margin: 5% 0 5% 5%;
-}
-
-
-fieldset.radio input{
-    margin-right: 1%;
-}
-
-
-label{font-weight: bold;}
+label{margin-bottom: 5%; display: inline;}
+input, select {margin-top: 2%;}
 
 fieldset.radio label{
     margin-right: 3%;
@@ -85,26 +70,11 @@ label#checkbox, label#price span { /* без  жиорность шрифта  *
 }
 
 input[name='price']{ /* Уменьшаем поле цена */
-    width: 5%;
+    width: 15%;
     margin-left: 1%;
+    display: inline;
 }
 
-.buttons {
-    background-color: aliceblue;
-
-    border: 2px solid #666666;
-    -webkit-border-radius:10px;
-    -moz-border-radius:10px;
-    border-radius:10px;
-
-    font-family: 'Verdana';
-    font-size: 1.1em;
-    text-transform: uppercase;
-    text-decoration: none;
-
-    padding: 2%;
-    transition: .5s;
-}
 
 input[type='submit']{
     width: 53%;
@@ -125,12 +95,12 @@ p#notice{
     font-size: .8em;
     margin: 5% 0 0 27%;
 }
- p#warning {
-     color:red;
-     font-size: 0.9em;
+p#warning {
+    color:red;
+    font-size: 0.9em;
     text-align: center;
 
- }
+}
 
 /* Таблица */
 
@@ -139,26 +109,18 @@ table {
     max-width:90%;
     margin: 2% auto;
     border: 1px solid #cccccc;
-    padding: .3% 0;
 
 }
 
-tr.caption {
-    background-color: aliceblue;
-    font-weight:bold;
-    color: #666;
-}
-
-tr.caption td {
+th {
     text-align: center;
 }
 tr {
     color:#666;
-}
-
-td {
-    padding: 1.5%;
-    border: 1px solid #666;
     text-align: center;
 }
 
+.table>tbody>tr>td {
+    vertical-align: middle;
+    font-size: 1.15em;
+}

@@ -20,21 +20,26 @@ if(isset($_POST['add'])) { // Добавление записи
     if (isset($_GET['del'])) {
         unset($_GET['del']);
     }
-    $new_ad = new Ads($_POST);
-    $warnings = $new_ad->getWarnings();
+
+    $warnings = $main->getWarnings();
 
     if ($warnings['status'] === true) {
+        $new_ad = new Ads($_POST);
         $new_ad->insertItem($db);
         }
     }
     else {
-        $show_data->ad = $_POST;
+        $main->ad = $_POST;
     }
 
 if (isset($_GET['del'])) { //Удаление записи
     $main->delItem($db);
 }
 $main->getAds($db);
+
+if($main->getShowparam()){
+    $main->ad = $main->data['ads'][$main->getShowparam()];
+}
 
 
 $smarty_data=[
@@ -44,7 +49,7 @@ $smarty_data=[
     'cities' => $main->getCities($db),
     'rss_confirm'=> $main->getCheckbox($db),
     'business_type' => $main->getBusinessType($db),
-    'alert' =>  $new_ad->warnings['message']
+    'alert' =>  $warnings['message']
 ];
 
 // SMARTY

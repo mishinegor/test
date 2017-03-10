@@ -41,12 +41,9 @@ class Ads
         $this->price = filter_var($validate_data['price'], FILTER_VALIDATE_INT);
 
     }
-
     public function getWarnings() {
         $warnings = array();
         $warnings['status'] = true;
-
-
 
         if (!isset($this->phone) || empty($this->phone) || !$this->phone){
             $warnings['status'] = false;
@@ -60,13 +57,11 @@ class Ads
         return $warnings;
 
     }
-
     public function insertItem($db) {
         $vars = get_object_vars($this);
         $add_query = $db->query("REPLACE INTO ads (?#) VALUES (?a)",
            array_keys($vars), array_values($vars));
     }
-
     public function delItem ($db){
         $this->id = filter_var($_GET['id'], FILTER_SANITIZE_URL);
         $del_query = $db->query("DELETE FROM ads WHERE id = ?d", $this->id) or die( "Невозвожно выполнить запрос, код ошибки :".mysqli_error($db));
