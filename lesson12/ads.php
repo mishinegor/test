@@ -41,6 +41,9 @@ class Ads
         $this->price = filter_var($validate_data['price'], FILTER_VALIDATE_INT);
 
     }
+    public function getId() {
+        return $this->id;
+    }
     public function getWarnings() {
         $warnings = array();
         $warnings['status'] = true;
