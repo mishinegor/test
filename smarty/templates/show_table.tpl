@@ -10,10 +10,10 @@
 
                 {foreach from = $ads key = key item = val}
                     <tr>
-                        <td><a href="?show={$key}">{$val.name_ad}</a></td>
-                        <td>{$val.price}</td>
-                        <td>{$val.name}</td>
-                        <td><a href="?id={$key}&del=1" class="btn btn-danger">удалить</a></td>
+                        <td><a href="?show=">{$val->getNameAd()}</a></td>
+                        <td>{$val->getPrice()}</td>
+                        <td>{$val->getName()}</td>
+                        <td><a href="?id=&del=1" class="btn btn-danger">удалить</a></td>
                     </tr>
                 {/foreach}
             </table>

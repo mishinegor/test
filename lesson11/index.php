@@ -9,53 +9,47 @@ $smarty_dir = $project_root. '/smarty/';
 require( $smarty_dir.'libs/Smarty.class.php');
 include('mysql_conection.php');
 
-include('ad.php');
-include('show_ads.php');
+include('ads.php');
+include('data_store.php');
 
 include('functions.php');
 
-$show_data = new ShowAds();
+$main = DataStore::instance();
 
 if(isset($_POST['add'])) { // Добавление записи
     if (isset($_GET['del'])) {
         unset($_GET['del']);
     }
-    $new_ad = new Ad();
-    $warnings = $new_ad->validationForm($_POST);
 
-    if ($new_ad->warnings['status'] === true) {
-        if (isset($_GET['show'])) {
-            $new_ad->updateItem($db);
-            header('location: index.php');
-        } else {
-            if (!empty($new_ad->validate_data)) {
+    $warnings = $main->getWarnings();
 
-                $new_ad->insertItem($db);
-            }
+    if ($warnings['status'] === true) {
+        $new_ad = new Ads($_POST);
+        $new_ad->insertItem($db);
         }
     }
     else {
-        $show_data->ad = $_POST;
+        $main->ad = $_POST;
     }
-}
 
 if (isset($_GET['del'])) { //Удаление записи
-    $show_data->delItem($db);
+    $main->delItem($db);
 }
-$show_data->getAds($db);
+$main->getAds($db);
 
-if($show_data->getShowparam()){
-    $show_data->ad = $show_data->data['ads'][$show_data->getShowparam()];
+if($main->getShowparam()){
+    $main->ad = $main->data['ads'][$main->getShowparam()];
 }
+
 
 $smarty_data=[
-    'button_value' => $show_data->getButtonValue(),
-    'show_param' => $show_data->show_param,
-    'cat'=> $show_data->getCategories($db),
-    'cities' => $show_data->getCities($db),
-    'rss_confirm'=> $show_data->getCheckbox($db),
-    'business_type' => $show_data->getBusinessType($db),
-    'alert' =>  $new_ad->warnings['message']
+    'button_value' => $main->getButtonValue(),
+    'show_param' => $main->show_param,
+    'cat'=> $main->getCategories($db),
+    'cities' => $main->getCities($db),
+    'rss_confirm'=> $main->getCheckbox($db),
+    'business_type' => $main->getBusinessType($db),
+    'alert' =>  $warnings['message']
 ];
 
 // SMARTY
@@ -70,9 +64,9 @@ $smarty->cache_dir = $smarty_dir.'cache';
 $smarty->config_dir = $smarty_dir.'configs';
 
 
-$smarty->assign('ads', $show_data->data['ads']);
+$smarty->assign('ads', $main->data['ads']);
 $smarty->assign('smarty_data', $smarty_data);
-$smarty->assign('ad', $show_data->ad);
+$smarty->assign('ad', $main->ad);
 
 $smarty->display('index.tpl');
 ?>

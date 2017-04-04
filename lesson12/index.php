@@ -9,48 +9,11 @@ $smarty_dir = $project_root. '/smarty/';
 require( $smarty_dir.'libs/Smarty.class.php');
 include('mysql_conection.php');
 
-include('ads.php');
+include('ad.php');
+include('ads_store.php');
 include('data_store.php');
 
 include('functions.php');
-
-$main = DataStore::instance();
-
-if(isset($_POST['add'])) { // Добавление записи
-    if (isset($_GET['del'])) {
-        unset($_GET['del']);
-    }
-
-    $warnings = $main->getWarnings();
-
-    if ($warnings['status'] === true) {
-        $new_ad = new Ads($_POST);
-        $new_ad->insertItem($db);
-        }
-    }
-    else {
-        $main->ad = $_POST;
-    }
-
-if (isset($_GET['del'])) { //Удаление записи
-    $main->delItem($db);
-}
-$main->getAds($db);
-
-if($main->getShowparam()){
-    $main->ad = $main->data['ads'][$main->getShowparam()];
-}
-
-
-$smarty_data=[
-    'button_value' => $main->getButtonValue(),
-    'show_param' => $main->show_param,
-    'cat'=> $main->getCategories($db),
-    'cities' => $main->getCities($db),
-    'rss_confirm'=> $main->getCheckbox($db),
-    'business_type' => $main->getBusinessType($db),
-    'alert' =>  $warnings['message']
-];
 
 // SMARTY
 
@@ -64,9 +27,32 @@ $smarty->cache_dir = $smarty_dir.'cache';
 $smarty->config_dir = $smarty_dir.'configs';
 
 
-$smarty->assign('ads', $main->data['ads']);
-$smarty->assign('smarty_data', $smarty_data);
-$smarty->assign('ad', $main->ad);
+$data_store = DataStore::instance();
+$ads_store= AdsStore::instance();
+
+
+if(isset($_POST['add'])) { // Добавление записи
+    if (isset($_GET['del'])) {
+        unset($_GET['del']);
+    }
+        $warnings = $data_store->getWarnings();
+
+   if ($warnings['status'] === true) {
+        $ad = new Ads($_POST);
+       $ads_store->insertItem($db, $ad);
+    }
+}
+
+if (isset($_GET['del'])) { //Удаление записи
+    $ads_store->delItem($db);
+}
+
+$data_store->showAd($ads_store);
+$ads_store->getAds($db);
+$data_store->writeDataStore($data_store);
+$data_store->getWarningsMassages();
+$ads_store->writeAds();
+
 
 $smarty->display('index.tpl');
 ?>

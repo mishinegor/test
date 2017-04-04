@@ -19,23 +19,23 @@
 <div class="container form-group">
 	<h1>Подайте объявление:</h1>
 	<form  method="post" id="add">
-		{foreach from=$smarty_data.alert item=item}
+		{foreach from=$alert item=item}
 			<p id="warning" class="help-block">{$item}</p>
         {/foreach}
-        {html_radios name="type" options=$smarty_data.business_type selected=$ad.type}
+        {html_radios name="type" options=$data_store->getBusinessType() selected=$ad.type}
 		<fieldset class="contacts_email form-group">
 			<label>Ваше имя <input name="name" type="text" class="form-control" value="{$ad.name}" required></label><br/>
 			<label>Ваш email <input name="email" type="text" class="form-control" value="{$ad.email}" required></label><br/>
-			{html_checkboxes name="confirm" options=$smarty_data.rss_confirm selected=$ad.confirm_rss}
+			{html_checkboxes name="confirm" options=$data_store->getCheckbox() selected=$ad.confirm_rss}
 		</fieldset>
 
 		<fieldset class="contacts_location">
 			<label>Ваш телефон <input name="phone" type="text" value="{$ad.phone}" class="form-control" required></label><br/>
 			<label>Ваш город
-                    {html_options name=city options=$smarty_data.cities selected=$ad.city class="form-control"}
+                    {html_options name=city options=$data_store->getCities() selected=$ad.city class="form-control"}
 			</label><br/>
 			<label>Категория товара
-					{html_options name=cat options=$smarty_data.cat selected=$ad.category class="form-control"}
+					{html_options name=category options=$data_store->getCategories() selected=$ad.category class="form-control"}
 			</label>
 		</fieldset>
 
@@ -45,7 +45,7 @@
 			<label><textarea name="ad_text" class="form-control" cols="40" rows="10" required>{$ad.ad_text}</textarea></label><br/>
 			<label id="price">Цена <input name="price" type="text" size="5" class="form-control" value="{$ad.price}"> <span>руб</span> </label><br/>
 		</fieldset>
-		<input type="submit" value="{$smarty_data.button_value}" class="btn btn-primary" name="add">
+		<input type="submit" value="{$data_store->getButtonValue()}" class="btn btn-primary" name="add">
 		<p class="help-block">*Все поля обязательны для заполнения</p>
 	</form>
         {include file ='show_table.tpl'}
